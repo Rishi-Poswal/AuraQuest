@@ -37,36 +37,43 @@ const LeftSideBar = () => {
   };
 
   return (
-    <div className="flex h-screen fixed">
-      {/* Main sidebar container */}
+    <div className="flex h-screen fixed mt-3">
+      
       <div className={`${isCollapsed ? 'w-16' : 'w-64'} bg-white border-r shadow-sm flex flex-col relative transition-all duration-300`}>
-        {/* Toggle button */}
+      
         <button
           onClick={toggleSidebar}
           className="absolute -right-3 top-6 bg-white rounded-full p-1 border shadow-sm z-10"
         >
           {isCollapsed ? <ChevronRightCircle size={20} /> : <ChevronLeft size={20} />}
         </button>
-
-        {/* Add task button */}
-        <div className="p-4">
-          <button onClick={() => setShowModal(true)} className={`w-full bg-red-500 text-black rounded-md py-2 px-4 d-flex items-center ${isCollapsed ? 'justify-center' : 'justify-center space-x-2'} border-black`}>
-            <Plus size={20} />
+  {/*Add task button */}
+  <div className={`p-4 ${isCollapsed ? 'px-2' : ''}`}>
+          <button 
+            onClick={() => setShowModal(true)} 
+            className={`
+              flex items-center justify-center
+              transition-all duration-300
+              ${isCollapsed 
+                ? 'w-10 h-10 rounded-lg bg-blue-200 hover:bg-blue-300' 
+                : 'w-full bg-blue-200 hover:bg-blue-300 rounded-md py-2 px-4 space-x-2'
+              }
+            `}
+          >
+            <Plus size={isCollapsed ? 16 : 20} />
             {!isCollapsed && <span>Add task</span>}
           </button>
 
-          
           <TaskModal 
             show={showModal} 
             handleClose={() => setShowModal(false)} 
           />
         </div>
-
         {/* Quick access buttons */}
         <div className="px-2 py-2 space-y-2">
         <div 
           className={`flex items-center p-2 rounded cursor-pointer transition-colors duration-200 
-            ${isActiveRoute('/inbox') ? 'bg-gray-200 text-red-500' : 'text-gray-600 hover:bg-gray-700 hover:text-white'}`}
+            ${isActiveRoute('/inbox') ? 'bg-gray-200 text-blue-700' : 'text-gray-600 hover:bg-gray-700 hover:text-white'}`}
           onClick={() => handleNavigation('/inbox')}
         >
           <Inbox size={20} />
@@ -77,7 +84,7 @@ const LeftSideBar = () => {
 
           <div 
             className={`flex items-center p-2 rounded cursor-pointer transition-colors duration-200 
-              ${isActiveRoute('/today') ? 'bg-gray-200 text-red-500' : 'text-gray-600 hover:bg-gray-700 hover:text-white'}`}
+              ${isActiveRoute('/today') ? 'bg-gray-200 text-blue-700' : 'text-gray-600 hover:bg-gray-700 hover:text-white'}`}
             onClick={() => handleNavigation('/today')}
           >
             <Calendar size={20} />
@@ -86,7 +93,7 @@ const LeftSideBar = () => {
           </div>
           <div 
              className={`flex items-center p-2 rounded cursor-pointer transition-colors duration-200 
-              ${isActiveRoute('/upcoming') ? 'bg-gray-200 text-red-500' : 'text-gray-600 hover:bg-gray-700 hover:text-white'}`}
+              ${isActiveRoute('/upcoming') ? 'bg-gray-200 text-blue-700' : 'text-gray-600 hover:bg-gray-700 hover:text-white'}`}
             onClick={() => handleNavigation('/upcoming')}
           >
             <CalendarDays size={20} />
@@ -97,7 +104,7 @@ const LeftSideBar = () => {
         {/* Categories - Only show when not collapsed */}
         {!isCollapsed && (
           <div className="px-2 py-2 space-y-2">
-            {/* Courses Category */}
+         
             <div className="space-y-1">
               <div 
                 className="flex items-center justify-between p-2 hover:bg-gray-100 rounded cursor-pointer"

@@ -5,6 +5,7 @@ const TaskModal = ({ show, handleClose }) => {
     title: '',
     description: '',
     dueDate: '',
+    dueTime: '',
     category: '',
     reminder: false,
     auraPoints: ''
@@ -29,13 +30,13 @@ const TaskModal = ({ show, handleClose }) => {
   if (!show) return null;
 
   return (
-    <div className="fixed inset-0 border-black bg-blue-600 bg-opacity-50 flex items-center justify-center backdrop-blur-sm m-3">
-      <div className="bg-white border border-blue-500 rounded-lg  w-full max-w-md">
+    <div className="fixed pt-16 bg-opacity-50 inset-0  border-black  flex items-center justify-center backdrop-blur-sm m-3 ">
+      <div className="bg-white border border-blue-500 rounded-lg w-full max-w-md">
         <div className="p-2">
           <h3 className="text-xl font-semibold mb-4 text-black text-center">Add New Task</h3>
           
-          <form onSubmit={handleSubmit} className='mx-2'>
-            <div className="mb-4 ">
+          <form onSubmit={handleSubmit} className="mx-2">
+            <div className="mb-4">
               <input
                 type="text"
                 name="title"
@@ -57,7 +58,7 @@ const TaskModal = ({ show, handleClose }) => {
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-4 mb-4 px-2">
+            <div className="grid grid-cols-2 gap-4 mb-4">
               <div>
                 <label className="block text-sm mb-1 text-black">Due Date</label>
                 <input
@@ -70,19 +71,30 @@ const TaskModal = ({ show, handleClose }) => {
               </div>
 
               <div>
-                <label className="block py-4 text-sm mb-1 pr-2 text-black">Category</label>
-                <select
-                  name="category"
+                <label className="block text-sm mb-1 text-black">Due Time</label>
+                <input
+                  type="time"
+                  name="dueTime"
                   className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  value={formData.category}
+                  value={formData.dueTime}
                   onChange={handleChange}
-                >
-                  <option value="">Select Category</option>
-                  {categories.map(cat => (
-                    <option key={cat} value={cat}>{cat}</option>
-                  ))}
-                </select>
+                />
               </div>
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-sm mb-1 text-black">Category</label>
+              <select
+                name="category"
+                className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                value={formData.category}
+                onChange={handleChange}
+              >
+                <option value="">Select Category</option>
+                {categories.map(cat => (
+                  <option key={cat} value={cat}>{cat}</option>
+                ))}
+              </select>
             </div>
 
             <div className="flex items-center mb-4">
@@ -109,7 +121,7 @@ const TaskModal = ({ show, handleClose }) => {
               />
             </div>
 
-            <div className="d-flex justify-end gap-2">
+            <div className="flex justify-end gap-2">
               <button
                 type="button"
                 onClick={handleClose}
