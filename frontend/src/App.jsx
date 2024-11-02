@@ -1,26 +1,36 @@
-import { useState, useEffect } from 'react'
-import {BrowserRouter, Routes, Route} from 'react-router-dom'
-import axios from 'axios';
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import Navbar from './home/components/Navbar/Navbar';
+import LeftSideBar from './home/components/LeftSideBar/LeftSideBar';
+import Today from './home/components/LeftSideBar/Today';
+import Upcoming from './home/components/LeftSideBar/Upcoming';
+import { SignIn, SignUp, About } from './pages';
 
-import { fromJSON } from 'postcss';
-
-import { SignIn, SignUp , About} from './pages';
-import Header from './components/Header/Header';
-
-function App() {
-  const [count, setCount] = useState(0)
-
+const App = () => {
   return (
-    <>
-    <Header/>
-      <Routes>
-      {/* <Route path="/" element={<Home/>} /> */}
-        <Route path="/signup" element={<SignUp/>} />
-        <Route path="/signin" element={<SignIn/>} />
-        <Route path="/about" element={<About/>} />
-      </Routes>
-    </>
-  )
-}
+      <>
+    
+        <Navbar />
+      <div className="pt-16"> 
+       
+        
+          <LeftSideBar />
+       
 
-export default App
+        {/* Main content area - pushed to the right of sidebar */}
+        <div className="ml-64 p-6">
+          <Routes>
+            {/* <Route path="/" element={<Today />} /> */}
+            <Route path="/today" element={<Today />} />
+            <Route path="/upcoming" element={<Upcoming />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="/about" element={<About />} />
+          </Routes>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default App;
