@@ -1,6 +1,6 @@
 import bcryptjs from 'bcryptjs';
 // import { User } from "../../models/user.model.js";
-import { User } from "../../models/user.model.js";
+import  User  from "../../models/user.model.js";
 
 import {generateTokenAndSetCookie} from "../../../utils/generateTokenAndSetCookie.js";
 

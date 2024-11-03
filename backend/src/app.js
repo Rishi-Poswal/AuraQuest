@@ -1,6 +1,11 @@
 import express from "express"
 import cors from "cors"
 import dotenv from "dotenv"
+import userRoutes from './routes/user.route.js';
+import authRoutes from './routes/auth.route.js';
+import taskRoutes from './routes/taskRoutes.js'
+import notificationRoutes from './routes/notification.route.js';
+
 dotenv.config()
 
 
@@ -13,10 +18,8 @@ app.use(cors({
     credentials:true
 }))
 
-//Routes import
-import authRoutes from '../routes/auth.route.js';
-import userRoutes from '../routes/user.route.js';
-import notificationRoutes from './routes/notification.route.js';
+
+
 
 // Test route
 app.get('/api/test', (req, res) => {
@@ -28,7 +31,11 @@ app.use("/api",userRoutes);
 // app.use("/api/user",userRoutes);
 
 app.use("/api/auth", authRoutes);
+
+app.use("/api/task", taskRoutes);
+
 app.use("/api/notification", notificationRoutes);
+
 
 
 export {app}

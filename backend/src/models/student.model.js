@@ -55,7 +55,7 @@ const studentSchema = new mongoose.Schema({
                 ref:"Course"
             },
             present:{
-                type:NUmber,
+                type: Number,
                 default:0
             },
             absent:{

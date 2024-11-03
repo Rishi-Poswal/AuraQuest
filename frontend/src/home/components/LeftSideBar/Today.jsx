@@ -1,64 +1,69 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaCalendar, FaEdit, FaTrash, FaCheck } from 'react-icons/fa';
+import axios from 'axios';
 
 const Today = () => {
+  const [tasks, setTasks] = useState([]);
   const [completedTasks, setCompletedTasks] = useState([]);
   const [showCompletionAlert, setShowCompletionAlert] = useState(false);
   const [auraPointsEarned, setAuraPointsEarned] = useState(0);
 
-  // Sample tasks 
-  const sampleTasks = [
-    {
-      id: 'task-1',
-      title: 'Complete daily meditation',
-      description: 'Spend 20 minutes in mindful meditation to start the day',
-      dueDate: '2023-05-30',
-      dueTime: "10:00",
-      auraPoints: 25,
-      category: 'Wellness'
-    },
-    {
-      id: 'task-2',
-      title: 'Submit quarterly sales report',
-      description: 'Gather data and prepare the report for the leadership team',
-      dueDate: '2023-06-15',
-      dueTime: "10:00",
-      auraPoints: 50,
-      category: 'Work'
-    },
-    {
-      id: 'task-3',
-      title: 'Read 20 pages of the new book',
-      description: 'Continue making progress on the personal development book',
-      dueDate: '2023-05-31',
-      dueTime: "10:00",
-      auraPoints: 15,
-      category: 'Personal'
-    },
-  ];
 
-  const handleTaskComplete = (taskId) => {
-    const task = sampleTasks.find(t => t.id === taskId);
-    setCompletedTasks([...completedTasks, taskId]);
-    setAuraPointsEarned(task.auraPoints);
-    setShowCompletionAlert(true);
-    setTimeout(() => setShowCompletionAlert(false), 3000);
+ 
+  useEffect(() => {
+    fetchTasks();
+  }, []);
+
+  const fetchTasks = async () => {
+    try {
+      const userId = "USER_ID"; // Replace with actual user ID
+      const response = await axios.post("http://localhost:3000/api/task/today", { userId });
+      setTasks(response.data.data);
+    } catch (error) {
+      console.error("Error fetching today's tasks:", error);
+    }
+  };
+
+  // Complete a task
+  const handleTaskComplete = async (taskId, aura) => {
+    try {
+      await axios.patch(`http://localhost:3000/api/task/complete-task/${taskId}`);
+      setCompletedTasks([...completedTasks, taskId]);
+      setAuraPointsEarned(aura);
+      setShowCompletionAlert(true);
+      setTimeout(() => setShowCompletionAlert(false), 3000);
+      fetchTasks();
+    } catch (error) {
+      console.error("Error completing task:", error);
+    }
+  };
+
+
+
+  // Delete a task
+  const handleDeleteTask = async (taskId) => {
+    try {
+      await axios.delete(`http://localhost:3000/api/task/delete-task/${taskId}`);
+      fetchTasks();
+    } catch (error) {
+      console.error("Error deleting task:", error);
+    }
   };
 
   const formatDueDateTime = (date, time) => {
     if (!date || !time) return null;
-    
+
     const formattedDate = new Date(date).toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
     });
-    
+
     const formattedTime = new Date(`2000-01-01T${time}`).toLocaleTimeString('en-US', {
       hour: 'numeric',
       minute: '2-digit',
-      hour12: true
+      hour12: true,
     });
-    
+
     return `${formattedDate}, ${formattedTime}`;
   };
 
@@ -84,32 +89,31 @@ const Today = () => {
         <div className="px-4 py-3 border-b flex justify-between items-center">
           <h3 className="text-sm font-semibold">Today</h3>
           <span className="bg-gray-200 text-gray-700 text-sm px-2 py-1 rounded-full">
-            {sampleTasks.length} task{sampleTasks.length !== 1 ? 's' : ''}
+            {tasks.length} task{tasks.length !== 1 ? 's' : ''}
           </span>
         </div>
 
         <div>
-          {sampleTasks.map(task => (
-            <div
-              key={task.id}
-              className="px-4 py-3 border-b last:border-b-0"
-            >
+          {tasks.map((task) => (
+            <div key={task._id} className="px-4 py-3 border-b last:border-b-0">
               <div className="flex flex-col sm:flex-row justify-between gap-2">
                 <div className="flex-1 min-w-0">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className={`font-medium ${completedTasks.includes(task.id) ? 'line-through text-gray-400' : ''}`}>
+                    <span
+                      className={`font-medium ${
+                        completedTasks.includes(task._id) ? 'line-through text-gray-400' : ''
+                      }`}
+                    >
                       {task.title}
                     </span>
                     <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">
-                      {task.category}
+                      {task.type}
                     </span>
                     <span className="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded">
-                      {task.auraPoints} pts
+                      {task.aura} pts
                     </span>
                   </div>
-                  <p className="text-sm text-gray-600 mt-1 break-words">
-                    {task.description}
-                  </p>
+                  <p className="text-sm text-gray-600 mt-1 break-words">{task.description}</p>
                   <div className="flex items-center gap-2 mt-2 text-sm text-gray-500">
                     <span>Due:</span>
                     <div className="flex items-center gap-1">
@@ -120,20 +124,13 @@ const Today = () => {
                 </div>
                 <div className="flex gap-1 sm:flex-shrink-0">
                   <button
-                    onClick={() => handleTaskComplete(task.id)}
-                    disabled={completedTasks.includes(task.id)}
+                    onClick={() => handleTaskComplete(task._id, task.aura)}
+                    disabled={completedTasks.includes(task._id)}
                     className="p-1 text-green-600 hover:bg-green-50 rounded disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <FaCheck />
                   </button>
-                  <button
-                    className="p-1 text-blue-600 hover:bg-blue-50 rounded"
-                  >
-                    <FaEdit />
-                  </button>
-                  <button
-                    className="p-1 text-red-600 hover:bg-red-50 rounded"
-                  >
+                  <button onClick={() => handleDeleteTask(task.taskId)} className="p-1 text-red-600 hover:bg-red-50 rounded">
                     <FaTrash />
                   </button>
                 </div>
@@ -143,11 +140,14 @@ const Today = () => {
         </div>
       </div>
 
-      {sampleTasks.length === 0 && (
+      {tasks.length === 0 && (
         <div className="bg-blue-50 text-blue-700 p-4 rounded-lg">
           No tasks scheduled for today. Click the "Add Task" button to create a new task.
         </div>
       )}
+
+  
+      
     </div>
   );
 };

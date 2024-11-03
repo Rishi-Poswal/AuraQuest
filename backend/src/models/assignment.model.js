@@ -1,35 +1,31 @@
 import mongoose from "mongoose"
 
 const assignmentSchema = new mongoose.Schema({
-        uploadedBy:{
-            type: mongoose.Schema.Types.ObjectId,
-            ref:"User"
-        },
-        title:{
-           type: String,
-        },
-        description:{
-           type: String,
-        },
-        dueDate:{
-            type: Date
-        },
-        isActive:{
-            type:Boolean
-        },
-        link:{
-            type:String
-        },
-        sectionId:{
-            type: mongoose.Schema.Types.ObjectId,
-            ref:"Section"
-        },
-        courseId:{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Course"
-        }
+    title: {
+        type: String,
+        required: true
     },
-    {timestamps:true}
-);
+    description: {
+        type: String
+    },
+    assignLink:{
+        type: String,
+        required: true
+    },
+    createdBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true
+    },
+    targetGroup: {
+        type: String,
+        enum: ['A1', 'A2', 'B1', 'B2', 'C1', 'C2', 'D1', 'D2'],
+        default: 'A1'
+    },
+    targetStudents: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    }]
+}, { timestamps: true });
 
 export const Assignment = mongoose.model("Assignment", assignmentSchema);
