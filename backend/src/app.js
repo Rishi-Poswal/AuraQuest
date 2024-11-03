@@ -1,8 +1,9 @@
 import express from "express"
 import cors from "cors"
 import dotenv from "dotenv"
-import userRoutes from '../routes/user.route.js';
-import authRoutes from '../routes/auth.route.js';
+import userRoutes from './routes/user.route.js';
+import authRoutes from './routes/auth.route.js';
+import taskRoutes from './routes/taskRoutes.js'
 dotenv.config()
 
 const app = express();
@@ -24,6 +25,7 @@ app.use("/api",userRoutes);
 // app.use("/api/user",userRoutes);
 
 app.use("/api/auth", authRoutes);
+app.use("/api/task", taskRoutes);
 
 // app.get('/api/testing', (req,res)=>{
 //     res.send('testing cors')

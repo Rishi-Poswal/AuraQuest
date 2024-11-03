@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import { toast } from 'react-hot-toast';
 
-const TaskModal = ({ show, handleClose }) => {
+const TaskModal = ({ show, handleClose, onTaskAdded }) => {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
     dueDate: '',
     dueTime: '',
-    category: '',
+    type: '',
     reminder: false,
     auraPoints: ''
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const categories = ['Course', 'Project', 'Assignment'];
 
   const handleChange = (e) => {
@@ -21,16 +24,55 @@ const TaskModal = ({ show, handleClose }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+    setIsSubmitting(true);
+
+    try {
+      const taskData = {
+        title: formData.title,
+        description: formData.description,
+        dueDate: formData.dueDate,
+        dueTime: formData.dueTime || "23:59",
+        type: formData.type,
+        assignmentMode: 'SELF_ASSIGNED',
+        aura: formData.aura,
+      };
+
+      console.log('taskdata', taskData);
+     
+
+      const response = await axios.post('http://localhost:3000/api/task', taskData
+        // , {
+        // headers: {
+        //   'Authorization': `Bearer ${localStorage.getItem('token')}`
+        // }
+      // }
+    );
+        toast.success('Task created successfully!');
+    setFormData({
+      title: '',
+      description: '',
+      dueDate: '',
+      dueTime: '',
+      type: '',
+      reminder: false,
+      aura: ''
+    });
+    onTaskAdded(response.data);
     handleClose();
+    console.log('added task successfully');
+        } catch (error) {
+      toast.error(error.response?.data?.message || 'Failed to create task');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (!show) return null;
 
   return (
-    <div className="fixed pt-16 bg-opacity-50 inset-0  border-black  flex items-center justify-center backdrop-blur-sm m-3 ">
+    <div className="fixed pt-16 bg-opacity-50 inset-0 flex items-center justify-center backdrop-blur-sm m-3">
       <div className="bg-white border border-blue-500 rounded-lg w-full max-w-md">
         <div className="p-2">
           <h3 className="text-xl font-semibold mb-4 text-black text-center">Add New Task</h3>
@@ -44,6 +86,7 @@ const TaskModal = ({ show, handleClose }) => {
                 className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={formData.title}
                 onChange={handleChange}
+                required
               />
             </div>
 
@@ -67,6 +110,7 @@ const TaskModal = ({ show, handleClose }) => {
                   className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                   value={formData.dueDate}
                   onChange={handleChange}
+                  required
                 />
               </div>
 
@@ -85,10 +129,11 @@ const TaskModal = ({ show, handleClose }) => {
             <div className="mb-4">
               <label className="block text-sm mb-1 text-black">Category</label>
               <select
-                name="category"
+                name="type"
                 className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={formData.category}
+                value={formData.type}
                 onChange={handleChange}
+                required
               >
                 <option value="">Select Category</option>
                 {categories.map(cat => (
@@ -97,43 +142,34 @@ const TaskModal = ({ show, handleClose }) => {
               </select>
             </div>
 
-            <div className="flex items-center mb-4">
-              <input
-                type="checkbox"
-                name="reminder"
-                id="reminder"
-                className="mr-2 focus:ring-blue-500"
-                checked={formData.reminder}
-                onChange={handleChange}
-              />
-              <label htmlFor="reminder" className="text-sm text-black">Set Reminder</label>
-            </div>
-
             <div className="mb-4">
               <label className="block text-sm mb-1 text-black">Aura Points</label>
               <input
                 type="number"
-                name="auraPoints"
-                placeholder="Enter points"
+                name="aura"
+                placeholder="Enter aura points"
                 className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={formData.auraPoints}
+                value={formData.aura}
                 onChange={handleChange}
               />
             </div>
+
 
             <div className="flex justify-end gap-2">
               <button
                 type="button"
                 onClick={handleClose}
                 className="px-4 py-2 text-gray-600 hover:bg-gray-200 rounded border border-gray-300"
+                disabled={isSubmitting}
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="px-4 py-2 text-gray-600 hover:bg-blue-400 rounded border border-gray-300"
+                className="px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded disabled:bg-blue-300"
+                disabled={isSubmitting}
               >
-                Add Task
+                {isSubmitting ? 'Adding...' : 'Add Task'}
               </button>
             </div>
           </form>
