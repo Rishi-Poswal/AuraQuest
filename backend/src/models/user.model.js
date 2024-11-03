@@ -52,6 +52,9 @@ const userSchema = new mongoose.Schema({
 			type: Boolean,
 			default: false,
 		},
+        userFCMtoken:[{
+            type:String
+        }],
 		resetPasswordToken: String,
 		resetPasswordExpiresAt: Date,
 		verificationToken: String,
