@@ -6,6 +6,9 @@ import authRoutes from './routes/auth.route.js';
 import taskRoutes from './routes/taskRoutes.js'
 import notificationRoutes from './routes/notification.route.js';
 
+import { enqueueNotification } from "./utils/Jobs/jobProducer.js";
+import { notificationWorker } from "./utils/Jobs/jobWorker.js";
+
 dotenv.config()
 
 
@@ -17,7 +20,6 @@ app.use(cors({
     origin: process.env.CLIENT_URI,
     credentials:true
 }))
-
 
 
 
@@ -36,6 +38,7 @@ app.use("/api/task", taskRoutes);
 
 app.use("/api/notification", notificationRoutes);
 
+// enqueueNotification();
 
 
 export {app}
