@@ -1,4 +1,4 @@
-import { sendNotification } from "../utils/FCM/sendNotification.js";
+import { sendNotificationToSingleDevice } from "../utils/FCM/sendNotification.js";
 import  User  from "../models/user.model.js";
 import { ApiError } from "../utils/ApiError.js";
 
@@ -24,7 +24,7 @@ const storeUserFCMtoken = async (req,res) =>{
         await user.save();
         console.log(`userFCmtoken stored `);
 
-        await sendNotification(userFCMtoken, 'Testing', 'Please work');
+        //await sendNotificationToSingleDevice(userFCMtoken, 'Testing', 'Please work');
 
         return res.status(200).json({message:'Token stored', success:true})
     }
@@ -40,7 +40,7 @@ const sendForceNotification = async (req,res) =>{
     try{
         const {userFCMtoken, title, body} = req.body;
 
-        const response = await sendNotification(userFCMtoken, title, body);
+        const response = await sendNotificationToSingleDevice(userFCMtoken, title, body);
         res.status(200).json({ message: 'Notification sent successfully', response });
     }
     catch(err){

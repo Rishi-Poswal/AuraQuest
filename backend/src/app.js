@@ -5,9 +5,7 @@ import userRoutes from './routes/user.route.js';
 import authRoutes from './routes/auth.route.js';
 import taskRoutes from './routes/taskRoutes.js'
 import notificationRoutes from './routes/notification.route.js';
-
-import { enqueueNotification } from "./utils/Jobs/jobProducer.js";
-import { notificationWorker } from "./utils/Jobs/jobWorker.js";
+import { enqueueNotification, enqueueReminder } from "./utils/Jobs/jobProducer.js";
 
 dotenv.config()
 
@@ -38,7 +36,6 @@ app.use("/api/task", taskRoutes);
 
 app.use("/api/notification", notificationRoutes);
 
-// enqueueNotification();
 
 
 export {app}

@@ -15,7 +15,7 @@ redisClient.on('error', (err) => {
     console.error('Redis connection error:', err);
 });
 
-export default redisClient
+export default redisClient;
 
 
 
