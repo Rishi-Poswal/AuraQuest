@@ -22,6 +22,7 @@ const sectionSchema = new mongoose.Schema({
         },
         sectionName: {
             type:String,
+            required: true,
         },
         students: [{
             type: mongoose.Schema.Types.ObjectId,
@@ -41,12 +42,14 @@ const sectionSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "Assignment"
         }],
-        // lectureSchedule: {
-        //     type: mongoose.Schema.Types.ObjectId,
-        //     ref: "Timetable"
-        // }
+        eventSchedule: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Timetable"
+        }]
     },
     {timestamps:true}
 );
 
-export const Section = mongoose.model("Section", sectionSchema);
+const Section = mongoose.model("Section", sectionSchema);
+
+export default Section

@@ -91,7 +91,7 @@ function NavigationBar() {
                 Dashboard
               </Nav.Link>
               <Nav.Link 
-                href="#calendar" 
+                href="calendar" 
                 className="px-3 py-2 nav-link-hover"
                 onClick={closeNav}
               >
