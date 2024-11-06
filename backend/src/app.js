@@ -6,9 +6,10 @@ import authRoutes from './routes/auth.route.js';
 import taskRoutes from './routes/taskRoutes.js'
 import notificationRoutes from './routes/notification.route.js';
 import { enqueueNotification, enqueueReminder } from "./utils/Jobs/jobProducer.js";
+import scheduleRoutes from './routes/schedule.routes.js'
 
 dotenv.config()
-
+    
 
 const app = express();
 
@@ -30,11 +31,18 @@ app.use("/api",userRoutes);
 
 // app.use("/api/user",userRoutes);
 
+//authentication routes
 app.use("/api/auth", authRoutes);
 
+//personal task handling routes
 app.use("/api/task", taskRoutes);
 
+
+//notification routes
 app.use("/api/notification", notificationRoutes);
+
+//events schedule routes
+app.use("/api/events", scheduleRoutes);
 
 
 
