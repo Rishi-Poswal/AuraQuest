@@ -1,0 +1,42 @@
+import Redis from "ioredis";
+
+const redisClient = new Redis({
+    host: process.env.REDIS_HOST,
+    port: process.env.REDIS_PORT,
+    password: process.env.REDIS_PASSWORD,
+    maxRetriesPerRequest: null
+})
+
+redisClient.on('connect', () => {
+    console.log('Connected to Redis Cloud');
+});
+  
+redisClient.on('error', (err) => {
+    console.error('Redis connection error:', err);
+});
+
+export default redisClient;
+
+
+
+
+
+//USING npm redis (not compatible with bullmq) :-
+
+// import {createClient} from "redis";
+
+// const redisClient = createClient({
+//     password: '',
+//     socket: {
+//         host: '',
+//         port: 
+//     }
+// });
+
+// redisClient.on('error', (err)=>{
+//     console.log('redis client encountered a error ... see redisClient.js', err);
+// })
+
+// await redisClient.connect();
+
+// export default redisClient;

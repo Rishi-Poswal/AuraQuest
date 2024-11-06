@@ -52,6 +52,9 @@ const userSchema = new mongoose.Schema({
 			type: Boolean,
 			default: false,
 		},
+        userFCMtoken:[{
+            type:String
+        }],
 		resetPasswordToken: String,
 		resetPasswordExpiresAt: Date,
 		verificationToken: String,
@@ -60,4 +63,6 @@ const userSchema = new mongoose.Schema({
     {timestamps:true}
 );
 
-export const User = mongoose.model("User", userSchema);
+const User = mongoose.model("User", userSchema);
+
+export default User;
