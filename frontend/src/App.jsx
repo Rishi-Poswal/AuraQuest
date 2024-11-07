@@ -4,10 +4,11 @@ import Navbar from './home/components/Navbar/Navbar';
 import LeftSideBar from './home/components/LeftSideBar/LeftSideBar';
 import Today from './home/components/LeftSideBar/Today';
 import Upcoming from './home/components/LeftSideBar/Upcoming';
-import { SignIn, SignUp, About } from './pages';
+//import { SignIn, SignUp, About } from './pages';
 import { requestNotificationPermission } from './utility/FCM/allowNotification.js';
 // import "react-big-calendar/lib/css/react-big-calendar.css"
 import ScheduleCalendar from '../src/home/components/Calendar/ScheduleCalendar.jsx'
+import Leaderboard from './home/components/Dashboard/Leaderboard.jsx';
 
 const App = () => {
   
@@ -31,10 +32,11 @@ const App = () => {
             {/* <Route path="/" element={<Today />} /> */}
             <Route path="/today" element={<Today />} />
             <Route path="/upcoming" element={<Upcoming />} />
-            <Route path="/signup" element={<SignUp />} />
+            {/* <Route path="/signup" element={<SignUp />} />
             <Route path="/signin" element={<SignIn />} />
-            <Route path="/about" element={<About />} />
+            <Route path="/about" element={<About />} /> */}
             <Route path="/calendar" element = {<ScheduleCalendar/>}/>
+            <Route path="/leaderboard" element = {<Leaderboard/>}/>
           </Routes>
         </div>
       </div>
