@@ -69,7 +69,6 @@ const Today = () => {
 
   return (
     <div className="p-4">
-      {/* Completion Alert */}
       {showCompletionAlert && (
         <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50">
           <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative shadow-lg">
@@ -84,7 +83,6 @@ const Today = () => {
         <h2 className="text-xl font-bold mb-4">Today's Tasks</h2>
       </div>
 
-      {/* Tasks List */}
       <div className="bg-white rounded-lg shadow">
         <div className="px-4 py-3 border-b flex justify-between items-center">
           <h3 className="text-sm font-semibold">Today</h3>

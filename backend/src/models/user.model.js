@@ -17,15 +17,16 @@ const userSchema = new mongoose.Schema({
         },
         role:{
             type: String,
-            enum: ['student', 'CR', 'faculty', 'admin'],
+            enum: ['Student', 'CR', 'Professor', 'admin'],
             default: 'student',
             required: true
         },
         firstName:{
             type: String,
-            required: true
+            // required: true
         },
         lastName:{
+            
             type: String,
         },
         profilePic:{
