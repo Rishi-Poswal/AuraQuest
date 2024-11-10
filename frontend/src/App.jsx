@@ -4,7 +4,7 @@ import Navbar from './home/components/Navbar/Navbar';
 import LeftSideBar from './home/components/LeftSideBar/LeftSideBar';
 import Today from './home/components/LeftSideBar/Today';
 import Upcoming from './home/components/LeftSideBar/Upcoming';
-import { SignIn, SignUp, About } from './pages';
+import { SignIn, SignUp, About, Dashboard } from './pages';
 import { requestNotificationPermission } from './utility/FCM/allowNotification.js';
 
 const App = () => {
@@ -14,8 +14,7 @@ const App = () => {
   });
 
   return (
-    <>
-    
+    <>      
       <Navbar />
       <div className="pt-16"> 
        
@@ -27,6 +26,7 @@ const App = () => {
         <div className="ml-64 p-6">
           <Routes>
             {/* <Route path="/" element={<Today />} /> */}
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/today" element={<Today />} />
             <Route path="/upcoming" element={<Upcoming />} />
             <Route path="/signup" element={<SignUp />} />

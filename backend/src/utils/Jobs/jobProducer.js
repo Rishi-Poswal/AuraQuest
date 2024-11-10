@@ -1,4 +1,4 @@
-import {Queue} from "bullmq";
+import {Queue} from "bullmq";      //bullmq provides the Queue class
 import redisClient from "./redisClient.js";
 import { ApiError } from "../ApiError.js";
 import { notificationWorker } from "./jobWorker.js";
