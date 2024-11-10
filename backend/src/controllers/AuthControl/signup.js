@@ -12,12 +12,16 @@ import {sendVerificationEmail, sendWelcomeEmail,sendPasswordResetEmail,
 
 
 // <-- Signup endpoint -->
-
 export const signup = async (req, res) => {
-    const { username, email, password, role, firstName } = req.body;
+    const { username, email, password, role, branch, batch } = req.body;
     try {
-        if (!username || !email || !password || !role || !firstName) {
+        if (!username || !email || !password || !role ) {
             throw new Error("All fields are required");
+        }
+
+        // Check for branch and batch if role is 'Student' or 'CR'
+        if ((role === 'Student' || role === 'CR') && (!branch || !batch)) {
+            throw new Error("Branch and batch are required for Student or CR roles");
         }
 
         const userAlreadyExists = await User.findOne({ $or: [{ email }, { username }] });
@@ -28,15 +32,23 @@ export const signup = async (req, res) => {
         const hashedPassword = await bcryptjs.hash(password, 10);
         const verificationToken = Math.floor(100000 + Math.random() * 900000).toString();
 
-        const user = new User({
+        const userData = {
             username,
             email,
             password: hashedPassword,
             role,
-            firstName,
+           
             verificationToken,
-            verificationTokenExpiresAt: Date.now() + 24 * 60 * 60 * 1000, // 24 hours
-        });
+            verificationTokenExpiresAt: Date.now() + 24 * 60 * 60 * 1000,
+        };
+
+        // Add branch and batch if role is Student or CR
+        if (role === 'Student' || role === 'CR') {
+            userData.branch = branch;
+            userData.batch = batch;
+        }
+
+        const user = new User(userData);
 
         await user.save();
 
@@ -54,7 +66,7 @@ export const signup = async (req, res) => {
                 username: user.username,
                 email: user.email,
                 role: user.role,
-                firstName: user.firstName,
+               
             },
         });
     } catch (error) {
@@ -197,3 +209,4 @@ export const checkAuth = async (req, res) => {
 		res.status(400).json({ success: false, message: error.message });
 	}
 };
+
