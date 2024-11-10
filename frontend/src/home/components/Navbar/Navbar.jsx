@@ -84,14 +84,14 @@ function NavigationBar() {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mx-auto">
               <Nav.Link 
-                href="#dashboard" 
+                href="leaderboard" 
                 className="px-3 py-2 nav-link-hover"
                 onClick={closeNav}
               >
                 Dashboard
               </Nav.Link>
               <Nav.Link 
-                href="#calendar" 
+                href="calendar" 
                 className="px-3 py-2 nav-link-hover"
                 onClick={closeNav}
               >

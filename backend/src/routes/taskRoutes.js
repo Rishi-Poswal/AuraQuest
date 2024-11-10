@@ -7,6 +7,7 @@ const router = express.Router();
 // Apply auth middleware to all routes
 //router.use(protectRoute);
 
+
 router.post('/', createTask);
 router.get('/get-tasks', getUserTasks);
 router.get('/:taskId', getTaskByID);

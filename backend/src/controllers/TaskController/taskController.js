@@ -5,8 +5,7 @@ import { Student } from "../../models/student.model.js";
   // Create new task
 export const createTask = async (req, res) => {
     try {
-        //console.log('Request Headers:', req.headers);
-        //console.log('Request Body:', req.body);
+      
 
         const {
             type,
@@ -19,7 +18,7 @@ export const createTask = async (req, res) => {
             aura  
         } = req.body; 
 
-        // Create task instance
+        
         const task = new Task({
             userId: '67253d9938df50d059d7cf74', // TODO: Replace with req.user._id
             type,
@@ -61,7 +60,7 @@ export const createTask = async (req, res) => {
     console.log(req.body);
     try {
       const tasks = await Task.find({userId: req.body._id} )   // userId: req.user._id to be added
-        // .sort({ dueDate: 1 })   
+        .sort({ dueDate: 1 })   
         // .populate('description', 'title');
         // console.log("tasks:", tasks);
       res.json(tasks);
@@ -129,26 +128,24 @@ export const createTask = async (req, res) => {
 export const completeTask = async (req, res) => {
   try {
     const { taskId } = req.params;
-    const userId = '67253d9938df50d059d7cf74';                       //req.user._id;
+    const userId = '67253d9938df50d059d7cf74';                       //to be replaced with req.user._id;
 
-    // Find the task
     const task = await Task.findById(taskId);
     if (!task) return res.status(404).json({ message: 'Task not found' });
 
-    // Find the student by user ID
+
     const student = await Student.findOne({ userId });
     if (!student) return res.status(404).json({ message: 'Student not found' });
 
-    // Check if the task is already completed
+
     if (task.completed) {
       return res.status(400).json({ message: 'Task is already completed' });
     }
 
-    // Mark the task as complete
     task.completed = true;
     await task.save();
 
-    // Update the student's aura points
+ 
     student.aura += task.aura;
     await student.save();
 
@@ -162,7 +159,7 @@ export const completeTask = async (req, res) => {
  
   export const getTodaysTasks = async (req, res) => {
     try {
-        const userId =  '67253d9938df50d059d7cf74'; // Make sure userId is sent in the request body
+        const userId =  '67253d9938df50d059d7cf74'; // req.user._id
 
         if (!userId) {
             return res.status(400).json({
@@ -171,13 +168,13 @@ export const completeTask = async (req, res) => {
             });
         }
 
-        // Get start and end of today
+
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         const tomorrow = new Date(today);
         tomorrow.setDate(tomorrow.getDate() + 1);
 
-        // Query tasks for today
+     
         const tasks = await Task.find({
             userId: userId,
             dueDate: {
@@ -211,10 +208,10 @@ export const getTasksByDate = async (req, res) => {
     }
 
     const targetDate = new Date(date);
-    targetDate.setUTCHours(0, 0, 0, 0); // Normalize to start of the day
+    targetDate.setUTCHours(0, 0, 0, 0); //start of the day
 
     const nextDate = new Date(targetDate);
-    nextDate.setDate(nextDate.getDate() + 1); // End of the target day
+    nextDate.setDate(nextDate.getDate() + 1); // end of the target day
 
     // Find tasks with dueDate within the selected day
     const tasks = await Task.find({
@@ -224,7 +221,6 @@ export const getTasksByDate = async (req, res) => {
       },
       userId: userId
     });
-    //console.log('tasks', tasks);
 
     res.status(200).json(tasks);
   } catch (error) {

@@ -10,7 +10,6 @@ import Upcoming from './home/components/LeftSideBar/Upcoming';
 import EmailVerificationPage from './pages/EmailVerification/EmailVerificationPage';
 import { requestNotificationPermission } from './utility/FCM/allowNotification.js';
 
-
 const App = () => {
   useEffect(() => {
     requestNotificationPermission();

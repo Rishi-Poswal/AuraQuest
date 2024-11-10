@@ -1,7 +1,7 @@
 import { ApiError } from "../ApiError.js";
 import admin from "./FCMconfig.js";
 import User from "../../models/user.model.js";
-import { Section } from "../../models/section.model.js";
+import  Section  from "../../models/section.model.js";
 import { Student } from "../../models/student.model.js";
 
 const sendNotificationToSingleDevice = async (userFCMtoken, title, description, data = {})=>{

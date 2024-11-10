@@ -9,3 +9,29 @@ body {
   min-height: 100vh;
 }
 
+.fc-toolbar {
+  background-color: #fbf4f4;
+  padding: 10px;
+  
+}
+
+.fc-event {
+  border-radius: 5px;
+  padding: 5px;
+  color: white;
+  font-weight: bold;
+}
+
+.fc-daygrid-event {
+  white-space: normal;
+  overflow: hidden;
+}
+
+.fc-daygrid-event {
+  background-color: var(--event-bg-color, #0d94d8) !important; /* Fallback color */
+  color: white !important;
+  border: none !important;
+  padding: 2px;
+  font: ;
+}
+
