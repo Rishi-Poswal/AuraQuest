@@ -23,16 +23,16 @@ const studentSchema = new mongoose.Schema({
         },
         section:{
             type: String,
-            required: true
+            // required: true
         },
         sectionId:{
            type: mongoose.Schema.Types.ObjectId,
            ref: "Section"
         },
-        stats:{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Stats"
-        },
+        // stats:{
+        //     type: mongoose.Schema.Types.ObjectId,
+        //     ref: "Stats"
+        // },
         taskList:[{
             type: mongoose.Schema.Types.ObjectId,
             ref: "Task"
@@ -62,7 +62,11 @@ const studentSchema = new mongoose.Schema({
                 type:Number,
                 default:0
             }
-        }]
+        }],
+        // activityId:{
+        //     type:mongoose.Schema.Types.ObjectId,
+        //     ref:'Activity'
+        // },
   
     },
     {timestamps:true}

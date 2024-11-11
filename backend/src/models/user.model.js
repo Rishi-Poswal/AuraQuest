@@ -56,6 +56,10 @@ const userSchema = new mongoose.Schema({
         userFCMtoken:[{
             type:String
         }],
+        // activiteDaysId:{
+        //     type:mongoose.Schema.Types.ObjectId,
+        //     ref:'Activity'
+        // },
 		resetPasswordToken: String,
 		resetPasswordExpiresAt: Date,
 		verificationToken: String,

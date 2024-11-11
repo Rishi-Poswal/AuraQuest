@@ -14,7 +14,8 @@ const statsSchema = new mongoose.Schema({
            type: String,
         },
         currentRank:{
-            type: NUmber,
+            type: Number,
+            default:0,
         },
         badges:[{
             type: String //ref it badges object
