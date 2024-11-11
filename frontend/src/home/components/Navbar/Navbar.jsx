@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function NavigationBar() {
   const [expanded, setExpanded] = useState(false);
+  const navigate = useNavigate();
 
   const closeNav = () => setExpanded(false);
   const user = {
@@ -11,6 +14,18 @@ function NavigationBar() {
     email: "user@example.com",
     avatar: "/api/placeholder/40/40"
   };
+
+  // Logout function using Axios
+  const handleSignOut = async () => {
+    try {
+      await axios.post(`${import.meta.env.VITE_SERVER_URI}/api/auth/logout`);
+      navigate('/signin'); // Redirect to Sign In page
+    } catch (error) {
+      console.error("Error during sign-out:", error);
+    }
+  };
+  
+
 
   return (
     <>
@@ -67,7 +82,7 @@ function NavigationBar() {
                 <i className="bi bi-gear me-2"></i>Edit Profile
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item href="#signout" onClick={closeNav} className="text-danger">
+              <NavDropdown.Item onClick={handleSignOut} className="text-danger">
                 <i className="bi bi-box-arrow-right me-2"></i>Sign out
               </NavDropdown.Item>
             </NavDropdown>
@@ -110,8 +125,6 @@ function NavigationBar() {
           onClick={closeNav}
         />
       )}
-
-    
     </>
   );
 }

@@ -29,6 +29,7 @@ const LoginPage = () => {
   const handleLogin = (e) => {
     e.preventDefault();
     dispatch(login({ email, password }));
+    navigate('/today');
   };
 
   return (

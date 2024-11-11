@@ -20,11 +20,11 @@ const EmailVerificationPage = () => {
   }, [dispatch]);
 
   // Redirect if already authenticated
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/");
-    }
-  }, [isAuthenticated, navigate]);
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     navigate("/");
+  //   }
+  // }, [isAuthenticated, navigate]);
 
   // Show error toast when error occurs
   useEffect(() => {
@@ -82,7 +82,7 @@ const EmailVerificationPage = () => {
     try {
       await dispatch(verifyEmail(verificationCode)).unwrap();
       toast.success("Email verified successfully");
-      navigate("/");
+      navigate("/signin");
     } catch (error) {
       // Error is handled by the error effect above
       setCode(["", "", "", "", "", ""]);

@@ -133,7 +133,12 @@ export const verifyEmail = async (req, res) => {
     }
 };
 
+// <-- signout -- >
 
+export const logout = async (req, res) => {
+	res.clearCookie("token");
+	res.status(200).json({ success: true, message: "Logged out successfully" });
+};
 // <-- forgot password endpoint -->
 
 export const forgotPassword = async (req, res) => {
