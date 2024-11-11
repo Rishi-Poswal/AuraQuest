@@ -7,13 +7,13 @@ import { ApiError } from "../utils/ApiError.js";
 
 const storeUserFCMtoken = async (req,res) =>{
     try{
-        const {userFCMtoken, username} = req.body;
-        // const user = req.user;  //after middleware is written---------<<<<<<<<<<
+        const {userFCMtoken} = req.body;
+        const userId = req.user._id;  
 
         const user = await User.findOne({
             $or: [
-                {username: username},
-                //{_id: user._id}
+                // {username: username},
+                {_id: userId}
             ]
         })
 
@@ -22,7 +22,7 @@ const storeUserFCMtoken = async (req,res) =>{
             return res.status(500).json({message: `Error in storeUserFCMtoken, notification controller`});
         }
 
-        user.userFCMtoken += userFCMtoken;
+        user.userFCMtoken = userFCMtoken;
         await user.save();
         console.log(`userFCmtoken stored `);
 
@@ -40,7 +40,10 @@ const storeUserFCMtoken = async (req,res) =>{
 //to check notification functionality
 const sendForceNotification = async (req,res) =>{
     try{
-        const {userFCMtoken, title, description} = req.body;
+        const {username, title, description} = req.body;
+
+        const user = await User.findOne({username:username});
+        const userFCMtoken = user.userFCMtoken;
 
         const response = await sendNotificationToSingleDevice(userFCMtoken, title, description);
         res.status(200).json({ message: 'Notification sent successfully', response });

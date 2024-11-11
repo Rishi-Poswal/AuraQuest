@@ -21,7 +21,7 @@ const sendFCMtokenToServer = async (token)=>{
         await axios.post(`${import.meta.env.VITE_SERVER_URI}/api/notification/storeUserFCMtoken`, 
             {userFCMtoken:token});
         
-        if(response.success){
+        if(response.data.success){
             console.log(`token stored in server successfully`); 
         }
         else{

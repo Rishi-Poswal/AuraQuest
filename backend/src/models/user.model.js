@@ -53,9 +53,9 @@ const userSchema = new mongoose.Schema({
 			type: Boolean,
 			default: false,
 		},
-        userFCMtoken:[{
+        userFCMtoken:{
             type:String
-        }],
+        },
         // activiteDaysId:{
         //     type:mongoose.Schema.Types.ObjectId,
         //     ref:'Activity'
