@@ -43,11 +43,8 @@ const TaskModal = ({ show, handleClose, onTaskAdded }) => {
      
 
       const response = await axios.post('http://localhost:3000/api/task', taskData
-        // , {
-        // headers: {
-        //   'Authorization': `Bearer ${localStorage.getItem('token')}`
-        // }
-      // }
+        , { withCredentials:true}
+      
     );
         toast.success('Task created successfully!');
     setFormData({

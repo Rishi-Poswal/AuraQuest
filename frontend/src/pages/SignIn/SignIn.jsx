@@ -5,6 +5,9 @@ import { Mail, Lock, Loader } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { login, clearError } from "../../redux/authSlice";
+import { useNavigate } from "react-router-dom";
+
+
 
 const Input = ({ icon: Icon, ...props }) => (
   <div className="relative mb-6">
@@ -22,14 +25,21 @@ const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   // Accessing Redux state
   const { isLoading, error } = useSelector((state) => state.auth);
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    dispatch(login({ email, password }));
-    navigate('/today');
+  const handleLogin = async (e) => {
+    try{
+      e.preventDefault();
+      await dispatch(login({ email, password }));
+      navigate('/today');
+    }
+    catch(err){
+      console.log('dimag kharab ho gya');
+    }
+    
   };
 
   return (
