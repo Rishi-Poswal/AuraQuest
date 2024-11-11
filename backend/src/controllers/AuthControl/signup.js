@@ -3,6 +3,9 @@ import bcryptjs from 'bcryptjs';
 import crypto from "crypto";
 // import { User } from "../../models/user.model.js";
 import  User  from "../../models/user.model.js";
+import { Student } from '../../models/student.model.js';
+import { Stats } from '../../models/stats.model.js';
+import { Activity } from '../../models/activity.model.js';
 
 import {generateTokenAndSetCookie} from "../../../utils/generateTokenAndSetCookie.js";
 
@@ -42,15 +45,38 @@ export const signup = async (req, res) => {
             verificationTokenExpiresAt: Date.now() + 24 * 60 * 60 * 1000,
         };
 
-        // Add branch and batch if role is Student or CR
-        if (role === 'Student' || role === 'CR') {
-            userData.branch = branch;
-            userData.batch = batch;
-        }
-
         const user = new User(userData);
 
         await user.save();
+
+        const activityData = {
+            userId:user._id
+        }
+        
+        // Add branch and batch if role is Student or CR
+        if (role === 'Student' || role === 'CR') {
+            const studentData = {
+                userId:user._id,
+                isCR: role==='CR',
+                branch,
+                batch
+            }
+            
+            const student = new Student(studentData);
+            await student.save();
+
+            activityData.studentId = student._id;
+            
+            const stats = new Stats({
+                studentId: student._id,
+            });
+
+            await stats.save();
+            
+        }
+
+        const activity = new Activity(activityData);
+        await activity.save();
 
         // Generate and set JWT token
         generateTokenAndSetCookie(res, user._id);
@@ -70,6 +96,8 @@ export const signup = async (req, res) => {
             },
         });
     } catch (error) {
+        console.log('error here in signup',error);
+        
         res.status(400).json({ success: false, message: error.message });
     }
 };

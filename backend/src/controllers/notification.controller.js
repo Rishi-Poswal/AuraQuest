@@ -40,9 +40,9 @@ const storeUserFCMtoken = async (req,res) =>{
 //to check notification functionality
 const sendForceNotification = async (req,res) =>{
     try{
-        const {userFCMtoken, title, body} = req.body;
+        const {userFCMtoken, title, description} = req.body;
 
-        const response = await sendNotificationToSingleDevice(userFCMtoken, title, body);
+        const response = await sendNotificationToSingleDevice(userFCMtoken, title, description);
         res.status(200).json({ message: 'Notification sent successfully', response });
     }
     catch(err){

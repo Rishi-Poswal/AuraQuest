@@ -7,10 +7,10 @@ const chapterSchema = new mongoose.Schema({
         description:{
            type: String,
         },
-        courseId:{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Course"
-        },
+        // courseId:{
+        //     type: mongoose.Schema.Types.ObjectId,
+        //     ref: "Course"
+        // },
         topics:[{
             type:String
         }],

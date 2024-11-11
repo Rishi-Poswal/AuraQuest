@@ -8,3 +8,21 @@
   font-weight: 400;
 }
 
+.color-empty {
+  fill: #e9f2fe; 
+}
+.color-scale-0 {
+  fill: #e9f2fe; 
+}
+.color-scale-1 {
+  fill: #c8defc; 
+}
+.color-scale-2 {
+  fill: #76a9e3; 
+}
+.color-scale-3 {
+  fill: #256db6; 
+}
+.color-scale-4 {
+  fill: #02327a; 
+}

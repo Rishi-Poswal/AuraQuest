@@ -1,18 +1,21 @@
 import express from "express"
 import cors from "cors"
 import dotenv from "dotenv"
+import cookieParser from "cookie-parser";
 import userRoutes from './routes/user.route.js';
 import authRoutes from './routes/auth.route.js';
 import taskRoutes from './routes/taskRoutes.js'
 import notificationRoutes from './routes/notification.route.js';
 import { enqueueNotification, enqueueReminder } from "./utils/Jobs/jobProducer.js";
-import scheduleRoutes from './routes/schedule.routes.js'
+import scheduleRoutes from './routes/schedule.routes.js';
+import dashboardRoutes from './routes/dashboard.route.js';
 
 dotenv.config()
     
 
 const app = express();
 
+app.use(cookieParser());
 app.use(express.json());
 
 app.use(cors({
@@ -39,6 +42,8 @@ app.use("/api/task", taskRoutes);
 
 app.use("/api/notification", notificationRoutes);
 
+//dashboard routes
+app.use("/api/dashboard", dashboardRoutes);
 
 
 export {app}

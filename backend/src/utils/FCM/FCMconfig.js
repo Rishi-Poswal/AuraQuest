@@ -1,7 +1,8 @@
-import admin from "firebase-admin"
-import dotenv from "dotenv"
+import admin from "firebase-admin";
+import dotenv from "dotenv";
 dotenv.config();
 
+//Configuring firebase-admin to handle cloud messaging (notification)
 const serviceAccount = {
   type: "service_account",
   project_id: "auraquest-baaa5",
@@ -16,6 +17,7 @@ const serviceAccount = {
   universe_domain: "googleapis.com"
 }
 
+//created firebase-admin
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
 })

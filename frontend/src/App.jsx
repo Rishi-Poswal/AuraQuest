@@ -4,11 +4,13 @@ import { Routes, Route } from 'react-router-dom';
 
 import MainLayout from './layouts/MainLayout';
 import AuthLayout from './layouts/AuthLayout';
-import { SignIn, SignUp, About } from './pages';
+import { SignIn, SignUp, About, Dashboard } from './pages';
 import Today from './home/components/LeftSideBar/Today';
 import Upcoming from './home/components/LeftSideBar/Upcoming';
 import EmailVerificationPage from './pages/EmailVerification/EmailVerificationPage';
 import { requestNotificationPermission } from './utility/FCM/allowNotification.js';
+import Leaderboard from './home/components/Dashboard/Leaderboard.jsx'
+import ScheduleCalendar from '../src/home/components/Calendar/ScheduleCalendar.jsx'
 
 const App = () => {
   useEffect(() => {
@@ -70,6 +72,30 @@ const App = () => {
         element={
           <MainLayout>
             <About />
+          </MainLayout>
+        }
+      />
+      <Route
+        path="/dashboard"
+        element={
+          <MainLayout>
+            <Dashboard />
+          </MainLayout>
+        }
+      />
+      <Route
+        path="/leaderboard"
+        element={
+          <MainLayout>
+            <Leaderboard />
+          </MainLayout>
+        }
+      />
+      <Route
+        path="/calendar"
+        element={
+          <MainLayout>
+            <ScheduleCalendar />
           </MainLayout>
         }
       />

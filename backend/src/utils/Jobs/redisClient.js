@@ -1,5 +1,6 @@
-import Redis from "ioredis";
+import Redis from "ioredis";   //using 'ioredis' instead of 'redis' as it is more compatible with bullmq
 
+//configuring redis client using redis cloud credentials... initiating the client will implicitly connect to redis cloud
 const redisClient = new Redis({
     host: process.env.REDIS_HOST,
     port: process.env.REDIS_PORT,
@@ -7,6 +8,7 @@ const redisClient = new Redis({
     maxRetriesPerRequest: null
 })
 
+//Redis event listeners
 redisClient.on('connect', () => {
     console.log('Connected to Redis Cloud');
 });

@@ -32,6 +32,22 @@ body {
   color: white !important;
   border: none !important;
   padding: 2px;
-  /* font:  */
+  /* font: ; */
+}
+
+.color-empty {
+  fill: #ebedf0; 
+}
+.color-scale-1 {
+  fill: #71a7ed; 
+}
+.color-scale-2 {
+  fill: #3376c1; 
+}
+.color-scale-3 {
+  fill: #075db2; 
+}
+.color-scale-4 {
+  fill: #00317b; 
 }
 
