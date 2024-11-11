@@ -1,8 +1,6 @@
-// authSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-// const API_URL = import.meta.env.MODE === "development" ? "http://localhost:3000/api/auth" : "/api/auth";
 const API_URL = `${import.meta.env.VITE_SERVER_URI}/api/auth`
 axios.defaults.withCredentials = true;
 
@@ -96,6 +94,7 @@ const authSlice = createSlice({
   name: 'auth',
   initialState: {
     user: null,
+    userDetails: null, // Added userDetails to store user information
     isAuthenticated: false,
     error: null,
     isLoading: false,
@@ -108,6 +107,9 @@ const authSlice = createSlice({
     },
     clearMessage: (state) => {
       state.message = null;
+    },
+    setUserDetails: (state, action) => {
+      state.userDetails = action.payload; // This reducer is for updating userDetails
     },
   },
   extraReducers: (builder) => {
@@ -136,6 +138,7 @@ const authSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.isLoading = false;
         state.user = action.payload.user;
+        state.userDetails = action.payload.userDetails; // Store the userDetails here
         state.isAuthenticated = true;
         state.error = null;
       })
@@ -152,6 +155,7 @@ const authSlice = createSlice({
       .addCase(logout.fulfilled, (state) => {
         state.isLoading = false;
         state.user = null;
+        state.userDetails = null; // Clear userDetails on logout
         state.isAuthenticated = false;
         state.error = null;
       })
@@ -221,6 +225,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { clearError, clearMessage } = authSlice.actions;
+export const { clearError, clearMessage, setUserDetails } = authSlice.actions;
 
 export default authSlice.reducer;

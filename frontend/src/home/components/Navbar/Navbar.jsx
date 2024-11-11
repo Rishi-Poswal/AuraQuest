@@ -3,17 +3,13 @@ import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useSelector } from 'react-redux';
 
 function NavigationBar() {
   const [expanded, setExpanded] = useState(false);
   const navigate = useNavigate();
 
   const closeNav = () => setExpanded(false);
-  const user = {
-    name: "User Name",
-    email: "user@example.com",
-    avatar: "/api/placeholder/40/40"
-  };
 
   // Logout function using Axios
   const handleSignOut = async () => {
@@ -25,7 +21,16 @@ function NavigationBar() {
     }
   };
   
+  // Get user data from Redux store
+  const user1 = useSelector((state) => state.auth.user);
+  
+  // Ensure user data is loaded
+  if (!user1) {
+    return null; // or return a loading state until user data is fetched
+  }
 
+  // Destructure the user properties from Redux
+  const { username, email, profilePic } = user1;
 
   return (
     <>
@@ -55,14 +60,14 @@ function NavigationBar() {
               title={
                 <div className="d-inline-flex align-items-center">
                   <img
-                    src={user.avatar}
+                    src={profilePic || '/default-avatar.png'} // Fallback to default avatar
                     alt="Profile"
                     className="rounded-circle border border-2"
                     width="40"
                     height="40"
                   />
                   <span className="d-none d-lg-inline ms-2 text-secondary">
-                    {user.name}
+                    {username}
                   </span>
                 </div>
               }
@@ -71,8 +76,8 @@ function NavigationBar() {
               className="me-2 nav-dropdown-profile"
             >
               <div className="px-3 py-2 bg-light rounded-top">
-                <p className="mb-0 fw-semibold">{user.name}</p>
-                <small className="text-muted">{user.email}</small>
+                <p className="mb-0 fw-semibold">{username}</p>
+                <small className="text-muted">{email}</small>
               </div>
               <NavDropdown.Divider />
               <NavDropdown.Item href="#profile" onClick={closeNav}>
@@ -88,6 +93,7 @@ function NavigationBar() {
             </NavDropdown>
           </div>
 
+          {/* Navbar Toggle Button for Mobile */}
           <Navbar.Toggle 
             aria-controls="basic-navbar-nav"
             className="border-0 shadow-none ms-2 custom-toggler"

@@ -5,6 +5,9 @@ import { Mail, Lock, Loader } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { login, clearError } from "../../redux/authSlice";
+import { useNavigate } from "react-router-dom";
+
+
 
 const Input = ({ icon: Icon, ...props }) => (
   <div className="relative mb-6">
@@ -22,6 +25,7 @@ const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   // Accessing Redux state
   const { isLoading, error } = useSelector((state) => state.auth);
