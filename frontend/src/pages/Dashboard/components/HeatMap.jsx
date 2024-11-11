@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import CalendarHeatmap from 'react-calendar-heatmap';
 import { Tooltip } from 'react-tooltip'
 import 'react-calendar-heatmap/dist/styles.css';
+import axios from 'axios';
 
 
 function HeatMap() {
@@ -9,12 +10,33 @@ function HeatMap() {
     const startDate = new Date(today);
     startDate.setMonth(startDate.getMonth() - 4);
 
+    // const [values, setValues] = useState([]);
+
+    // useEffect(()=>{
+
+    //     const fetchActivity = async () => {
+    //         try {
+    //             const response = await axios.get(`${import.meta.env.VITE_SERVER_URI}/api/dashboard/studentActivity`);
+    //             const data = response.data;
+    
+    //             setValues(data);
+    //             console.log(values);
+                
+    //         } catch (error) {
+    //           console.error('Error fetching dashboard stats:', error);
+    //         }
+    //     };
+      
+    //     fetchActivity();
+
+    // },[]);
+
     const values = [
-        { date: '2024-11-06', count: 0 },
-        { date: '2024-11-07', count: 21 },
-        { date: '2024-11-08', count: 41 },
-        { date: '2024-11-09', count: 51 },
-        { date: '2024-11-10', count: 101 },
+        { date: '2024-11-06', auraGained: 0 },
+        { date: '2024-11-07', auraGained: 21 },
+        { date: '2024-11-08', auraGained: 41 },
+        { date: '2024-11-09', auraGained: 51 },
+        { date: '2024-11-10', auraGained: 101 },
     ];
 
   return (
@@ -32,15 +54,15 @@ function HeatMap() {
                 endDate={today}
                 values={values}
                 classForValue={(value) => {
-                  if (!value || value.count===0) return 'color-empty'; 
-                  if (value.count > 100) return 'color-scale-4'; 
-                  if (value.count > 50) return 'color-scale-3'; 
-                  if (value.count > 30) return 'color-scale-2';
+                  if (!value || value.auraGained===0) return 'color-empty'; 
+                  if (value.auraGained > 100) return 'color-scale-4'; 
+                  if (value.auraGained > 50) return 'color-scale-3'; 
+                  if (value.auraGained > 30) return 'color-scale-2';
                   return 'color-scale-1'; 
                 }}
                 tooltipDataAttrs={(value) => ({
                   'data-tooltip-id': 'heatmap',
-                  'data-tooltip-content': value.date ? `Aura +${value.count} (${value.date})` : 'Aura +0',
+                  'data-tooltip-content': value.date ? `Aura +${value.auraGained} (${value.date})` : 'Aura +0',
                 })}
             />
             <Tooltip id="heatmap" />

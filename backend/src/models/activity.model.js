@@ -11,7 +11,7 @@ const activitySchema = new mongoose.Schema({
            required:true,
         },
         days:[{
-            day: {
+            date: {
                 type: Date
             },
             auraGained: {

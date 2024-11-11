@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine } from 'recharts';
+import axios from 'axios';
 
 function AuraDistribution() {
     const [currUserIdx, setCurrUserIdx] = useState(-1);
@@ -8,7 +9,9 @@ function AuraDistribution() {
     const [auraDist, setAuraDist] = useState([{}])
     const [currUser, setCurrUser] = useState({})    //{range, top}
 
-    const currAura = 650;  // The current user's aura rating
+    
+
+    const currAura = 650;  
     const auraData = [
         { range: '< 100', users: 7 },
         { range: '100 - 200', users: 10 },
@@ -23,9 +26,32 @@ function AuraDistribution() {
         { range: '1000+', users: 20 }
     ];
 
-    const n = auraData.length;
+    // const [currAura, setCurrAura] = useState(0)
+    // const [auraData, setAuraData] = useState([])
+
+    // useEffect(()=>{
+    //     const fetchAuraDist = async () => {
+    //         try {
+    //             const response = await axios.get(`${import.meta.env.VITE_SERVER_URI}/api/dashboard/aura-distribution`);
+    //             // const data = response.data;
+                
+    //             setCurrAura(response.data.currAura);
+    //             setAuraData(response.data.auraData);
+                
+    //             console.log(auraData);
+                
+    //         } catch (error) {
+    //           console.error('Error fetching dashboard stats:', error);
+    //         }
+    //     };
+      
+    //     fetchAuraDist();
+    // },[])
+
+    
    
     const findCurrUserIndex = ()=>{
+        const n = auraData.length;
             // Find the current user's index based on their aura value
         for (let i=0; i<n; i++) {
     
@@ -49,6 +75,7 @@ function AuraDistribution() {
     }
 
     const populateAuraDist = ()=>{
+        const n = auraData.length;
         const usersAhead = new Array(n);
         //Initialize the last index of usersAhead (accumulated users count)
         usersAhead[n - 1] = auraData[n - 1].users;
@@ -76,7 +103,7 @@ function AuraDistribution() {
             findCurrUserIndex(); 
         }, 0);
     
-    }, []); 
+    }, [currAura, auraData]); 
     
 
     useEffect(() => {

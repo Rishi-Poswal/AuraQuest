@@ -5,9 +5,9 @@ import protectRoute from "../middlewares/protectRoute.js";
 const router = express.Router();
 
 router.get('/getStats',protectRoute, getStudentStats);
-router.get('/attendance', getStudentAttendance);
-router.get('/aura-distribution', getAuraDistribution);
-router.get('/studentActivity', getStudentActivity);
+router.get('/attendance',protectRoute, getStudentAttendance);
+router.get('/aura-distribution',protectRoute, getAuraDistribution);
+router.get('/studentActivity',protectRoute, getStudentActivity);
 
 
 export default router
