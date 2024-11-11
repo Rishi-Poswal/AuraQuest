@@ -3,6 +3,7 @@ import  Section  from '../../models/section.model.js' ;
 
 //create a new event and link it to a section
 export const addEvent = async (req, res) => {
+
   try {
     const {
       title,
@@ -14,8 +15,6 @@ export const addEvent = async (req, res) => {
       instructor,
       sectionId = '672a80ac9e9d132a1adfc831',
       courseColor,
-      rrule,
-      endRecurrence
     } = req.body;
 
   // Creating the event in the Timetable collection
@@ -28,8 +27,6 @@ export const addEvent = async (req, res) => {
       location,
       instructor,
       courseColor,
-      rrule,
-      endRecurrence
     });
    
     const savedEvent = await newEvent.save();
