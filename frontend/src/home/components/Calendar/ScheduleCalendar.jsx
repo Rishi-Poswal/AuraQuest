@@ -24,27 +24,27 @@ const ScheduleCalendar = () => {
       const secId='672a80ac9e9d132a1adfc831'
       const response = await axios.get(`http://localhost:3000/api/events/${secId}`);  // include section id here
       const formattedEvents = response.data.map((event) => {
-        const rruleStr = `FREQ=${event.rrule.freq};UNTIL=${event.endRecurrence.split('T')[0].replace(/-/g, '')};BYDAY=${event.rrule.byweekday.join(',')}`;
+        // const rruleStr = `FREQ=${event.rrule.freq};UNTIL=${event.endRecurrence.split('T')[0].replace(/-/g, '')};BYDAY=${event.rrule.byweekday.join(',')}`;
  
         return {
           title: event.title,
           start: event.startDate,
           end: event.endDate,
-          startRecur: event.startDate.split('T')[0],
-          endRecur: event.endRecurrence ? event.endRecurrence.split('T')[0] : null,
+          // startRecur: event.startDate.split('T')[0],
+          // endRecur: event.endRecurrence ? event.endRecurrence.split('T')[0] : null,
           
-          daysOfWeek: event.rrule.byweekday.map((day) => {
-            const daysMap = {
-              MO: 1,
-              TU: 2,
-              WE: 3,
-              TH: 4,
-              FR: 5,
-              SA: 6,
-              SU: 0,
-            };
-            return daysMap[day];
-          }),
+          // daysOfWeek: event.rrule.byweekday.map((day) => {
+          //   const daysMap = {
+          //     MO: 1,
+          //     TU: 2,
+          //     WE: 3,
+          //     TH: 4,
+          //     FR: 5,
+          //     SA: 6,
+          //     SU: 0,
+          //   };
+          //   return daysMap[day];
+          // }),
           allDay: event.wholeDay,
           backgroundColor: event.courseColor,
           extendedProps: {
@@ -71,11 +71,11 @@ const ScheduleCalendar = () => {
         endDate: eventData.endDate,
         wholeDay: eventData.wholeDay,
         location: eventData.location,
-        instructor: eventData.instructor, //an object with a 'name' property
+        instructor: eventData.instructor,
         sectionId: '672a80ac9e9d132a1adfc831', // to be replaced with section id of user
         courseColor: eventData.courseColor,
-        rrule: eventData.rrule,
-        endRecurrence: eventData.endRecurrence,
+        // rrule: eventData.rrule,
+        // endRecurrence: eventData.endRecurrence,
       });
       fetchEvents();
     } catch (error) {
@@ -118,19 +118,23 @@ const ScheduleCalendar = () => {
           listPlugin,
           interactionPlugin,
           multiMonthPlugin,
-          rrulePlugin,
         ]}
         initialView="dayGridMonth"
         headerToolbar={{
           left: 'prev,next today',
           center: 'title',
-          right: 'dayGridMonth,multiMonthYear,listMonth',   //timeGridWeek,timeGridDay to be added
+          right: 'dayGridMonth,timeGridWeek,timeGridDay,multiMonthYear,listMonth',  
         }}
         events={events}
         eventContent={renderEventContent}
         editable={true}
         selectable={true}
         height="auto"
+        eventTimeFormat={{
+        hour: '2-digit',
+        minute: '2-digit',
+        meridiem: true
+        }}
       />
       { /* {input event details using this modal} */ }
       <EventModal

@@ -17,8 +17,6 @@ const protectRoute = async (req, res, next) => {
         }
 		req.user = user;
 
-		// console.log(req.user);
-
 		next();
 	} catch (err) {
 		res.status(500).json({ message: err.message , succcess:false});

@@ -42,6 +42,8 @@ app.use("/api/task", taskRoutes);
 
 app.use("/api/notification", notificationRoutes);
 
+app.use("/api/events", scheduleRoutes);
+
 //dashboard routes
 app.use("/api/dashboard", dashboardRoutes);
 

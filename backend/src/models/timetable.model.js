@@ -36,24 +36,24 @@ const timeTableSchema = new mongoose.Schema({
     default: '#2196F3'
   },
   //rrule stores the freq of recurrence of an event
-  rrule: {
-    freq: {
-      type: String,
-      enum: ['yearly', 'monthly', 'weekly', 'daily'],
-    },
-    byweekday: [{
-      type: String,
-      enum: ['MO', 'TU', 'WE', 'TH', 'FR', 'SA', 'SU']
-    }],
-    interval: {
-      type: Number,
-      default: 1
-    }
-  },
-  endRecurrence:{
-    type: Date,
-    default: null
-  },
+  // rrule: {
+  //   freq: {
+  //     type: String,
+  //     enum: ['yearly', 'monthly', 'weekly', 'daily'],
+  //   },
+  //   byweekday: [{
+  //     type: String,
+  //     enum: ['MO', 'TU', 'WE', 'TH', 'FR', 'SA', 'SU']
+  //   }],
+  //   interval: {
+  //     type: Number,
+  //     default: 1
+  //   }
+  // },
+  // endRecurrence:{
+  //   type: Date,
+  //   default: null
+  // },
 }, { timestamps: true });
 
 

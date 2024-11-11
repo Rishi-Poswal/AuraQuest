@@ -12,12 +12,6 @@ const EventModal = ({ isOpen, onClose, onSubmit, instructors }) => {
     location: '',
     instructor: '67253d9938df50d059d7cf74', // This will store the MongoDB ObjectId of instructor
     courseColor: '#2196F3',
-    rrule: {
-      freq: 'weekly',
-      byweekday: [],
-      interval: 1
-    },
-    endRecurrence: ''
   });
 
   const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
@@ -63,17 +57,17 @@ const EventModal = ({ isOpen, onClose, onSubmit, instructors }) => {
     }
   };
 
-  const handleWeekdayChange = (day) => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      rrule: {
-        ...prevFormData.rrule,
-        byweekday: prevFormData.rrule.byweekday.includes(day)
-          ? prevFormData.rrule.byweekday.filter((d) => d !== day)
-          : [...prevFormData.rrule.byweekday, day]
-      }
-    }));
-  };
+  // const handleWeekdayChange = (day) => {
+  //   setFormData((prevFormData) => ({
+  //     ...prevFormData,
+  //     rrule: {
+  //       ...prevFormData.rrule,
+  //       byweekday: prevFormData.rrule.byweekday.includes(day)
+  //         ? prevFormData.rrule.byweekday.filter((d) => d !== day)
+  //         : [...prevFormData.rrule.byweekday, day]
+  //     }
+  //   }));
+  // };
 
   const handleSubmit = async (e) => {
     console.log('formData', formData);
@@ -153,17 +147,8 @@ const EventModal = ({ isOpen, onClose, onSubmit, instructors }) => {
             </div>
           </div>
 
-          <div className="mb-3">
-            <Label for="endRecurrence">End Recurrence</Label>
-            <Input
-              id="endRecurrence"
-              name="endRecurrence"
-              type="datetime-local"
-              value={formData.endRecurrence}
-              onChange={handleInputChange}
-            />
-          </div>
-
+         
+{/* 
           <div className="mb-3">
             <Label>Repeat on</Label>
             <div className="d-flex gap-2">
@@ -178,7 +163,7 @@ const EventModal = ({ isOpen, onClose, onSubmit, instructors }) => {
                 </Button>
               ))}
             </div>
-          </div>
+          </div> */}
 
           <div className="form-check mb-3">
             <Input
