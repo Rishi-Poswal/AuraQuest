@@ -1,5 +1,5 @@
 import React from 'react';
-import Navbar from '../home/components/Navbar/Navbar';
+import Navbar from '../home/components/Navbar/Navbar.jsx';
 import LeftSideBar from '../home/components/LeftSideBar/LeftSideBar';
 
 const MainLayout = ({ children }) => {

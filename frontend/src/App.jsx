@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate, Navigate } from 'react-router-dom';
 
 
 import MainLayout from './layouts/MainLayout';
@@ -11,36 +11,24 @@ import EmailVerificationPage from './pages/EmailVerification/EmailVerificationPa
 import { requestNotificationPermission } from './utility/FCM/allowNotification.js';
 import Leaderboard from './home/components/Dashboard/Leaderboard.jsx'
 import ScheduleCalendar from '../src/home/components/Calendar/ScheduleCalendar.jsx'
+import { useSelector } from 'react-redux';
 
 const App = () => {
   useEffect(() => {
     requestNotificationPermission();
   }, []);
+  
+  const isLoggedIn = useSelector((state) => state.auth.isAuthenticated);
+  const navigate = useNavigate();
 
   return (
     <Routes>
       <Route 
         path="/"
         element={
-          <MainLayout>
-            <Today />
-          </MainLayout>
-        }
-      />
-      <Route
-        path="/today"
-        element={
-          <MainLayout>
-            <Today />
-          </MainLayout>
-        }
-      />
-      <Route
-        path="/upcoming"
-        element={
-          <MainLayout>
-            <Upcoming />
-          </MainLayout>
+          <AuthLayout>
+            <SignIn />
+          </AuthLayout>
         }
       />
       <Route
@@ -67,36 +55,78 @@ const App = () => {
           </AuthLayout>
               }
       />
+
+      <Route
+        path="/today"
+        element={
+          isLoggedIn ? (
+            <MainLayout>
+              <Today />
+            </MainLayout>
+          ) : (
+            <Navigate to="/signin" />
+          )
+        }
+      />
+      <Route
+        path="/upcoming"
+        element={
+          isLoggedIn ? (
+            <MainLayout>
+              <Upcoming />
+            </MainLayout>
+          ) : (
+            <Navigate to="/signin" />
+          )
+        }
+      />
+      
       <Route
         path="/about"
         element={
-          <MainLayout>
-            <About />
-          </MainLayout>
+          isLoggedIn ? (
+            <MainLayout>
+              <About />
+            </MainLayout>
+          ) : (
+            <Navigate to="/signin" />
+          )
         }
       />
       <Route
         path="/dashboard"
         element={
-          <MainLayout>
-            <Dashboard />
-          </MainLayout>
+          isLoggedIn ? (
+            <MainLayout>
+              <Dashboard />
+            </MainLayout>
+          ) : (
+            <Navigate to="/signin" />
+          )
         }
       />
       <Route
         path="/leaderboard"
         element={
-          <MainLayout>
-            <Leaderboard />
-          </MainLayout>
+          isLoggedIn ? (
+            <MainLayout>
+              <Leaderboard />
+            </MainLayout>
+          ) : (
+            <Navigate to="/signin" />
+          )
         }
       />
       <Route
         path="/calendar"
         element={
-          <MainLayout>
-            <ScheduleCalendar />
-          </MainLayout>
+          isLoggedIn ? (
+            <MainLayout>
+              <ScheduleCalendar />
+            </MainLayout>
+          ) : (
+            <Navigate to="/signin" />
+          )
         }
       />
     </Routes>

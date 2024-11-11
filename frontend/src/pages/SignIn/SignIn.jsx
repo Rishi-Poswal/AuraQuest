@@ -30,10 +30,16 @@ const LoginPage = () => {
   // Accessing Redux state
   const { isLoading, error } = useSelector((state) => state.auth);
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    dispatch(login({ email, password }));
-    navigate('/today');
+  const handleLogin = async (e) => {
+    try{
+      e.preventDefault();
+      await dispatch(login({ email, password }));
+      navigate('/today');
+    }
+    catch(err){
+      console.log('dimag kharab ho gya');
+    }
+    
   };
 
   return (
