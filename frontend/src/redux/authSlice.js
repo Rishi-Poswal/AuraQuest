@@ -266,7 +266,10 @@ export const login = createAsyncThunk(
       dispatch(setAuthData({ user: response.data.user, userDetails: response.data.userDetails }));
       return response.data;
     } catch (error) {
+      console.log("Catch block triggered", error);
+  console.log("invalid credentials");
       return rejectWithValue(error.response?.data?.message || "Error logging in");
+     
     }
   }
 );
@@ -368,7 +371,11 @@ const authSlice = createSlice({
       state.userDetails = null;
       state.isAuthenticated = false;
       localStorage.removeItem('auth');  // Remove from localStorage
-    }
+    },
+    setAuthCheckComplete: (state) => {
+      state.isCheckingAuth = false; // Mark auth check as complete
+    },
+
   },
   extraReducers: (builder) => {
     builder
@@ -416,6 +423,27 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload;
       })
+      .addCase(checkAuth.pending, (state) => {
+        state.isCheckingAuth = true;
+        state.error = null;
+      })
+      .addCase(checkAuth.fulfilled, (state, action) => {
+        state.isCheckingAuth = false;
+        state.isAuthenticated = true;
+        state.user = action.payload.user;
+        state.userDetails = action.payload.userDetails;
+        localStorage.setItem('auth', JSON.stringify({
+          user: action.payload.user,
+          userDetails: action.payload.userDetails,
+        }));
+      })
+      .addCase(checkAuth.rejected, (state) => {
+        state.isCheckingAuth = false;
+        state.isAuthenticated = false;
+        state.user = null;
+        state.userDetails = null;
+        localStorage.removeItem('auth');
+      });
 
       // Other reducers for verifyEmail, forgotPassword, resetPassword...
   },

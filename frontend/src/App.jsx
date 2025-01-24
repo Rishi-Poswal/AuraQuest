@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
 import { Routes, Route, useNavigate, Navigate } from 'react-router-dom';
-
-
 import MainLayout from './layouts/MainLayout';
 import AuthLayout from './layouts/AuthLayout';
 import { SignIn, SignUp, About, Dashboard } from './pages';
@@ -11,15 +9,53 @@ import EmailVerificationPage from './pages/EmailVerification/EmailVerificationPa
 import { requestNotificationPermission } from './utility/FCM/allowNotification.js';
 import Leaderboard from './home/components/Dashboard/Leaderboard.jsx'
 import ScheduleCalendar from '../src/home/components/Calendar/ScheduleCalendar.jsx'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
+import { checkAuth } from "./redux/authSlice";
+import { useLocation } from "react-router-dom";
 
 const App = () => {
   useEffect(() => {
     requestNotificationPermission();
   }, []);
-  
-  const isLoggedIn = useSelector((state) => state.auth.isAuthenticated);
+
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const { isAuthenticated, isCheckingAuth } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (location.pathname === "/signup") {
+      return;
+    }
+    const initializeAuth = async () => {
+     
+      try {
+        // Dispatch the thunk and wait for the result
+        const resultAction = await dispatch(checkAuth());
+  
+        // Check if the action was fulfilled
+        if (checkAuth.fulfilled.match(resultAction)) {
+          console.log("Session validated");
+        } else {
+          console.log("Session expired or invalid");
+          navigate("/signin"); // Redirect to login if session is invalid
+        }
+      } catch (err) {
+        console.error("Error during authentication check", err);
+        navigate("/signin"); // Redirect on error
+      }
+    };
+  
+    initializeAuth();
+  }, [dispatch, navigate]);
+
+  if (isCheckingAuth) {
+    return <div>Loading...</div>; // Show loading while checking auth
+  }
+  
+  // const isLoggedIn = useSelector((state) => state.auth.isAuthenticated);
+  // const navigate = useNavigate();
 
   return (
     <Routes>
@@ -59,19 +95,19 @@ const App = () => {
       <Route
         path="/today"
         element={
-          isLoggedIn ? (
+          isAuthenticated ? (
             <MainLayout>
               <Today />
             </MainLayout>
           ) : (
-            <Navigate to="/signin" />
+            <Navigate to="/signup" />
           )
         }
       />
       <Route
         path="/upcoming"
         element={
-          isLoggedIn ? (
+          isAuthenticated ? (
             <MainLayout>
               <Upcoming />
             </MainLayout>
@@ -84,7 +120,7 @@ const App = () => {
       <Route
         path="/about"
         element={
-          isLoggedIn ? (
+          isAuthenticated ? (
             <MainLayout>
               <About />
             </MainLayout>
@@ -96,7 +132,7 @@ const App = () => {
       <Route
         path="/dashboard"
         element={
-          isLoggedIn ? (
+          isAuthenticated ? (
             <MainLayout>
               <Dashboard />
             </MainLayout>
@@ -108,7 +144,7 @@ const App = () => {
       <Route
         path="/leaderboard"
         element={
-          isLoggedIn ? (
+          isAuthenticated ? (
             <MainLayout>
               <Leaderboard />
             </MainLayout>
@@ -120,7 +156,7 @@ const App = () => {
       <Route
         path="/calendar"
         element={
-          isLoggedIn ? (
+          isAuthenticated ? (
             <MainLayout>
               <ScheduleCalendar />
             </MainLayout>
