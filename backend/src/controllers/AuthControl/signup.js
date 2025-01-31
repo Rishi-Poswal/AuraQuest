@@ -40,7 +40,6 @@ export const signup = async (req, res) => {
             email,
             password: hashedPassword,
             role,
-           
             verificationToken,
             verificationTokenExpiresAt: Date.now() + 24 * 60 * 60 * 1000,
         };
