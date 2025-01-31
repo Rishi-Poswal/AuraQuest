@@ -12,6 +12,7 @@ import ScheduleCalendar from '../src/home/components/Calendar/ScheduleCalendar.j
 import { useDispatch, useSelector } from "react-redux";
 import { checkAuth } from "./redux/authSlice";
 import { useLocation } from "react-router-dom";
+import AdminDashboard from './pages/Admin/AdminDashboard.jsx';
 
 const App = () => {
   useEffect(() => {
@@ -57,6 +58,14 @@ const App = () => {
   // const isLoggedIn = useSelector((state) => state.auth.isAuthenticated);
   // const navigate = useNavigate();
 
+  const AdminRoute = ({ element }) => {
+    const { user, isAuthenticated } = useSelector((state) => state.auth);
+    return isAuthenticated && user?.role === "admin" ? (
+     {element}
+    ) : (
+      <Navigate to="/signin" />
+    );
+  };
   return (
     <Routes>
       <Route 
@@ -165,6 +174,8 @@ const App = () => {
           )
         }
       />
+       {/* Admin Route */}
+       <Route path="/admin" element={<AdminDashboard />}  />
     </Routes>
   );
 };

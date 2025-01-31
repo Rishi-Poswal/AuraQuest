@@ -65,7 +65,7 @@ const SignUpPage = () => {
 
   const navigate = useNavigate()
 
-  const roles = ["Student", "CR", "Professor"];
+  const roles = ["Student", "CR", "Professor","admin"];
 
   const handleSignUp = async (e) => {
     e.preventDefault();
