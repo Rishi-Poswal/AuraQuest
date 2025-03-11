@@ -25,8 +25,9 @@ const courseSchema = new mongoose.Schema({
             ref:"Chapter"
         }],
         faculties:[{
-            type: mongoose.Schema.Types.ObjectId,
-            ref:"Faculty"
+            // type: mongoose.Schema.Types.ObjectId,
+            type: String ,
+            // ref:"Faculty"
         }],
         semester:{
             type: Number

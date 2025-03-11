@@ -1,4 +1,4 @@
-// LoginPage.jsx
+
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Mail, Lock, Loader } from "lucide-react";
@@ -31,11 +31,18 @@ const LoginPage = () => {
   const { isLoading, error } = useSelector((state) => state.auth);
 
   const handleLogin = async (e) => {
+    e.preventDefault();
     try{
-      e.preventDefault();
-      await dispatch(login({ email, password }));
-      navigate('/today');
+      const resultAction = await dispatch(login({ email, password })).unwrap(); // Unwrapping to get result directly
+
+      // Navigate based on the role
+      if (resultAction.role === "admin") {
+        navigate("/admin"); // Redirect to admin page
+      } else {
+        navigate("/today"); // Redirect to user page
+      }
     }
+    
     catch(err){
       console.log('dimag kharab ho gya');
     }
