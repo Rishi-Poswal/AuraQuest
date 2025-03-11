@@ -10,34 +10,34 @@ function HeatMap() {
     const startDate = new Date(today);
     startDate.setMonth(startDate.getMonth() - 4);
 
-    // const [values, setValues] = useState([]);
+    const [values, setValues] = useState([]);
 
-    // useEffect(()=>{
+    useEffect(()=>{
 
-    //     const fetchActivity = async () => {
-    //         try {
-    //             const response = await axios.get(`${import.meta.env.VITE_SERVER_URI}/api/dashboard/studentActivity`);
-    //             const data = response.data;
-    
-    //             setValues(data);
-    //             console.log(values);
+        const fetchActivity = async () => {
+            try {
+                const response = await axios.get(`${import.meta.env.VITE_SERVER_URI}/api/dashboard/studentActivity`);
+                const data = response.data.data;
                 
-    //         } catch (error) {
-    //           console.error('Error fetching dashboard stats:', error);
-    //         }
-    //     };
+                setValues(data);
+                console.log(values);
+                
+            } catch (error) {
+              console.error('Error fetching dashboard stats:', error);
+            }
+        };
       
-    //     fetchActivity();
+        fetchActivity();
 
-    // },[]);
+    },[]);
 
-    const values = [
-        { date: '2024-11-06', auraGained: 0 },
-        { date: '2024-11-07', auraGained: 21 },
-        { date: '2024-11-08', auraGained: 41 },
-        { date: '2024-11-09', auraGained: 51 },
-        { date: '2024-11-10', auraGained: 101 },
-    ];
+    // const values = [
+    //     { date: '2024-11-06', auraGained: 0 },
+    //     { date: '2024-11-07', auraGained: 21 },
+    //     { date: '2024-11-08', auraGained: 41 },
+    //     { date: '2024-11-09', auraGained: 51 },
+    //     { date: '2024-11-10', auraGained: 101 },
+    // ];
 
   return (
     <div className='w-full h-full flex flex-col items-center'>
@@ -62,7 +62,9 @@ function HeatMap() {
                 }}
                 tooltipDataAttrs={(value) => ({
                   'data-tooltip-id': 'heatmap',
-                  'data-tooltip-content': value.date ? `Aura +${value.auraGained} (${value.date})` : 'Aura +0',
+                  'data-tooltip-content': value.date
+                    ? `Aura +${value.auraGained} (${new Date(value.date).toISOString().split("T")[0]})`
+                    : 'Aura +0',
                 })}
             />
             <Tooltip id="heatmap" />

@@ -16,7 +16,7 @@ function SecondRow({val1,total1,val2,total2}) {
         <div className="border-l-2 hidden lg:block border-slate-200 h-full"></div>
         <div className='h-5 lg:hidden'></div>
 
-        <hr class="border-gray-500 my-4 lg:hidden" />
+        <hr className="border-gray-500 my-4 lg:hidden" />
 
         <div className='basis-1/2 h-40 flex flex-col justify-center items-center'>
             <HeatMap/>

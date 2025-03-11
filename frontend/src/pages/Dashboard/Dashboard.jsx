@@ -19,15 +19,17 @@ function Dashboard() {
     const fetchStats = async () => {
       try {
         const response = await axios.get(`${import.meta.env.VITE_SERVER_URI}/api/dashboard/getStats`);
-        const data = response.data;
+        const res = response.data.data;
+
+        // console.log(res);
 
         // Extract the required variables from the response
-        setAura(data.aura);
-        setRank(data.rank);
+        setAura(res.aura);
+        setRank(res.currentRank);
         // setTotalChallenges(data.challenges);
         setTotalChallenges(7);
-        setTotalDailyChallengesCompleted(data.totalDailyChallengesCompleted);
-        setTotalAssignmentsSubmitted(data.totalAssignmentsSubmitted);
+        setTotalDailyChallengesCompleted(res.totalDailyChallengesCompleted);
+        setTotalAssignmentsSubmitted(res.totalAssignmentsSubmitted);
         // setTotalAssignments(data.totalAssignments);
         setTotalAssignments(5);
       } catch (error) {
@@ -42,24 +44,24 @@ function Dashboard() {
   return (
     <div className=' inset-y-0 '>
 
-       <div className='h-full gap-1 flex flex-row mt-3'>
-           
-           <div className='h-[700px] flex flex-col gap-3 xl:basis-10/12 w-full mr-4 rounded-xl'>
-                
-                {/* rows */}
 
-                <FirstRow aura={650} rank={50}/>
-   
-                <SecondRow val1={12} total1={20} val2={2} total2={8} />
+       {aura !== null && rank !== null ? (
+          <div className='h-full gap-1 flex flex-row mt-3'>
+            <div className='h-[700px] flex flex-col gap-3 xl:basis-10/12 w-full mr-4 rounded-xl'>
+              
+              <FirstRow aura={aura} rank={rank} />
+              
+              <SecondRow val1={totalDailyChallengesCompleted} total1={20} val2={totalAssignmentsSubmitted} total2={8} />
+              
+              <ThirdRow />
 
-                <ThirdRow />
+            </div>
 
-           </div>
-           
-           {/* right sidebar */}
-           <RightProfileBar/>
-           
-       </div>
+            <RightProfileBar />
+          </div>
+        ) : (
+          <div>Loading Dashboard...</div> 
+        )}
 
     </div>
   )

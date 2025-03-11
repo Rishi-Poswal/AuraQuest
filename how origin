@@ -1,0 +1,18 @@
+[33m71f2df7[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;32mrishi[m[33m)[m main@{0}: pull origin main: Fast-forward
+[33mec3ff30[m main@{1}: merge rishi: Fast-forward
+[33m9407b70[m main@{2}: pull origin main: Fast-forward
+[33m741effe[m main@{3}: pull origin main: Fast-forward
+[33m89c158a[m main@{4}: merge rishi: Fast-forward
+[33m7790f4c[m main@{5}: commit (merge): dashboard frontend
+[33mc6aeb6b[m main@{6}: commit: staging before pulling
+[33m83a8fd8[m main@{7}: merge bull: Fast-forward
+[33med2e23d[m main@{8}: merge bull: Fast-forward
+[33md027b0a[m main@{9}: pull origin main: Fast-forward
+[33m30931ce[m main@{10}: merge rishi: Fast-forward
+[33m7fb33ec[m main@{11}: commit (merge): Merge branch 'main' of https://github.com/Rishi-Poswal/AuraQuest
+[33m8f26b1f[m main@{12}: merge rishi: Fast-forward
+[33mc51c861[m main@{13}: pull origin main: Fast-forward
+[33mb74b4f2[m main@{14}: merge rishi: Fast-forward
+[33mfa8fd07[m main@{15}: merge setup: Fast-forward
+[33m0965d14[m main@{16}: commit: project setup
+[33md7f8573[m main@{17}: commit (initial): let's roll

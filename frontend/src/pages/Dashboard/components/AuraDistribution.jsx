@@ -11,42 +11,49 @@ function AuraDistribution() {
 
     
 
-    const currAura = 650;  
-    const auraData = [
-        { range: '< 100', users: 7 },
-        { range: '100 - 200', users: 10 },
-        { range: '200 - 300', users: 22 },
-        { range: '300 - 400', users: 45 },
-        { range: '400 - 500', users: 100 },
-        { range: '500 - 600', users: 250 },
-        { range: '600 - 700', users: 150 },
-        { range: '700 - 800', users: 75 },
-        { range: '800 - 900', users: 30 },
-        { range: '900 - 1000', users: 10 },
-        { range: '1000+', users: 20 }
-    ];
+    // const currAura = 400;  
+    // const auraData = [
+    //     { range: '< 100', users: 7 },
+    //     { range: '100 - 200', users: 10 },
+    //     { range: '200 - 300', users: 22 },
+    //     { range: '300 - 400', users: 45 },
+    //     { range: '400 - 500', users: 100 },
+    //     { range: '500 - 600', users: 250 },
+    //     { range: '600 - 700', users: 150 },
+    //     { range: '700 - 800', users: 75 },
+    //     { range: '800 - 900', users: 30 },
+    //     { range: '900 - 1000', users: 10 },
+    //     { range: '1000+', users: 20 }
+    // ];
 
-    // const [currAura, setCurrAura] = useState(0)
-    // const [auraData, setAuraData] = useState([])
+    const [currAura, setCurrAura] = useState(0)
+    const [auraData, setAuraData] = useState([])
 
-    // useEffect(()=>{
-    //     const fetchAuraDist = async () => {
-    //         try {
-    //             const response = await axios.get(`${import.meta.env.VITE_SERVER_URI}/api/dashboard/aura-distribution`);
-    //             // const data = response.data;
+    useEffect(()=>{
+        const fetchAuraDist = async () => {
+            try {
+                const response = await axios.get(`${import.meta.env.VITE_SERVER_URI}/api/dashboard/aura-distribution`);
+                // const data = response.data;
+                console.log(response.data.data);
                 
-    //             setCurrAura(response.data.currAura);
-    //             setAuraData(response.data.auraData);
+                setCurrAura(response.data.data.currAura);
+                setAuraData(response.data.data.auraData);
                 
-    //             console.log(auraData);
+                // console.log(auraData);
                 
-    //         } catch (error) {
-    //           console.error('Error fetching dashboard stats:', error);
-    //         }
-    //     };
+            } catch (error) {
+              console.error('Error fetching dashboard stats:', error);
+            }
+        };
       
-    //     fetchAuraDist();
-    // },[])
+        fetchAuraDist();
+    },[])
+
+    useEffect(() => {
+        if (auraData.length > 0) {
+          populateAuraDist();
+        }
+    }, [auraData]);
 
     
    
@@ -72,6 +79,10 @@ function AuraDistribution() {
                 break;
             }
         }
+
+        if (currAura < 100) {
+            setCurrUserIdx(0); 
+        }
     }
 
     const populateAuraDist = ()=>{
@@ -94,16 +105,9 @@ function AuraDistribution() {
             users: data.users
         }));
 
-        setAuraDist(updatedAuraDist)
+        setAuraDist(updatedAuraDist);
+        findCurrUserIndex(updatedAuraDist);
     }
-        
-    useEffect(() => {
-        populateAuraDist(); 
-        setTimeout(() => {
-            findCurrUserIndex(); 
-        }, 0);
-    
-    }, [currAura, auraData]); 
     
 
     useEffect(() => {

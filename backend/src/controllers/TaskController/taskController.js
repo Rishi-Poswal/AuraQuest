@@ -1,5 +1,7 @@
 import { Task } from '../../models/task.model.js';
 import { Student } from "../../models/student.model.js";
+import { Stats } from '../../models/stats.model.js';
+import { updateAura } from '../../utils/updateAura.js';
 
 
   // Create new task
@@ -128,11 +130,17 @@ export const completeTask = async (req, res) => {
     task.completed = true;
     await task.save();
 
- 
-    student.aura += task.aura;
-    await student.save();
+    // const student_stat = await Stats.findOneAndUpdate(
+    //   { studentId: student._id },
+    //   { $inc: { aura: task.aura } },
+    //   { new: true, upsert: true } // `upsert: true` ensures the stat document is created if it doesn't exist
+    // );
 
-    
+ 
+    // student.aura += task.aura;
+    // await student.save();
+
+    await updateAura(userId,task.aura);
 
     res.json({ message: 'Task marked as complete', auraPoints: task.aura, totalAura: student.aura });
   } catch (error) {

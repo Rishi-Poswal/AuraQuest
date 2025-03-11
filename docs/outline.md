@@ -143,8 +143,6 @@
 # WHEN A SEMESTER ENDS
 
 
-
-
 # AURA POINTS RULES
 - sign up :-  +x
 - sign in :-  +x
@@ -161,4 +159,10 @@
 - completing a 4cycle pomodoro session:-
 - winning a challenge friend :-
 - losing a challenge friend:-
+
+
+# Admin controls
+- Add courses 
+- Add assignment  
+- 
 

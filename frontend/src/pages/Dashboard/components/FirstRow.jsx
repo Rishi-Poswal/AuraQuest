@@ -5,6 +5,7 @@ import FigureCard from './figureCard.jsx';
 import AuraDistribution from './AuraDistribution.jsx';
 
 function FirstRow({aura, rank}) {
+  console.log(aura);
   return (
     <div className='flex flex-col lg:flex-row bg-white drop-shadow-md rounded-xl p-3'>
 

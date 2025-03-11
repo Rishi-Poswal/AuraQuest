@@ -20,6 +20,11 @@ const getStudentStats = async (req, res)=>{
         const stats = await Stats.findOne({studentId:student._id});
 
         if(stats){
+            const higher_auras = await Stats.countDocuments({ aura: { $gt: stats.aura } });
+            const rank = higher_auras + 1;
+            stats.currentRank = rank;
+            await stats.save();
+
             res.status(200).json({
                 success: true,
                 data: stats
