@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Routes, Route, useNavigate, Navigate } from 'react-router-dom';
 import MainLayout from './layouts/MainLayout';
 import AuthLayout from './layouts/AuthLayout';
-import { SignIn, SignUp, About, Dashboard } from './pages';
+import { SignIn, SignUp, About, Dashboard, DailyChallenge} from './pages';
 import Today from './home/components/LeftSideBar/Today';
 import Upcoming from './home/components/LeftSideBar/Upcoming';
 import EmailVerificationPage from './pages/EmailVerification/EmailVerificationPage';
@@ -144,6 +144,18 @@ const App = () => {
           isAuthenticated ? (
             <MainLayout>
               <Dashboard />
+            </MainLayout>
+          ) : (
+            <Navigate to="/signin" />
+          )
+        }
+      />
+      <Route
+        path="/dailyChallenge"
+        element={
+          isAuthenticated ? (
+            <MainLayout>
+              <DailyChallenge />
             </MainLayout>
           ) : (
             <Navigate to="/signin" />
