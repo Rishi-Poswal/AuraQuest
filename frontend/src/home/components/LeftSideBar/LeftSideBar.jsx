@@ -5,11 +5,6 @@ import TaskModal from './TaskModal';
 
 const LeftSideBar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [categories, setCategories] = useState({
-    courses: false,
-    assignments: false,
-    projects: false
-  });
   const [showModal, setShowModal] = useState(false);
   
   const navigate = useNavigate();
@@ -101,67 +96,7 @@ const LeftSideBar = () => {
           </div>
         </div>
 
-        {/* Categories - Only show when not collapsed */}
-        {!isCollapsed && (
-          <div className="px-2 py-2 space-y-2">
-         
-            <div className="space-y-1">
-              <div 
-                className="flex items-center justify-between p-2 hover:bg-gray-100 rounded cursor-pointer"
-                onClick={() => toggleCategory('courses')}
-              >
-                <div className="flex items-center space-x-2">
-                  {categories.courses ? <ChevronDown size={20} /> : <ChevronRight size={20} />}
-                  <span className="text-uppercase fw-bold">Courses</span>
-                </div>
-              </div>
-              {categories.courses && (
-                <div className="ml-6 px-2 space-y-1">
-                  <div className="p-2 hover:bg-gray-100 rounded">Course 1</div>
-                  <div className="p-2 hover:bg-gray-100 rounded">Course 2</div>
-                </div>
-              )}
-            </div>
-
-            {/* Assignments Category */}
-            <div className="space-y-1">
-              <div 
-                className="flex items-center justify-between p-2 hover:bg-gray-100 rounded cursor-pointer"
-                onClick={() => toggleCategory('assignments')}
-              >
-                <div className="flex items-center space-x-2">
-                  {categories.assignments ? <ChevronDown size={20} /> : <ChevronRight size={20} />}
-                  <span className="text-uppercase fw-bold">Assignments</span>
-                </div>
-              </div>
-              {categories.assignments && (
-                <div className="ml-6 px-2 space-y-1">
-                  <div className="p-2 hover:bg-gray-100 rounded">Assignment 1</div>
-                  <div className="p-2 hover:bg-gray-100 rounded">Assignment 2</div>
-                </div>
-              )}
-            </div>
-
-            {/* Projects Category */}
-            <div className="space-y-1">
-              <div 
-                className="flex items-center justify-between p-2 hover:bg-gray-100 rounded cursor-pointer"
-                onClick={() => toggleCategory('projects')}
-              >
-                <div className="flex items-center space-x-2">
-                  {categories.projects ? <ChevronDown size={20} /> : <ChevronRight size={20} />}
-                  <span className="text-uppercase fw-bold">Projects</span>
-                </div>
-              </div>
-              {categories.projects && (
-                <div className="ml-6 px-2 space-y-1">
-                  <div className="p-2 hover:bg-gray-100 rounded">Project 1</div>
-                  <div className="p-2 hover:bg-gray-100 rounded">Project 2</div>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
+       
       </div>
     </div>
   );

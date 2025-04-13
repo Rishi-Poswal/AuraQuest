@@ -39,7 +39,7 @@ const LoginPage = () => {
       if (resultAction.role === "admin") {
         navigate("/admin"); // Redirect to admin page
       } else {
-        navigate("/today"); // Redirect to user page
+        navigate("/courses"); // Redirect to user page
       }
     }
     

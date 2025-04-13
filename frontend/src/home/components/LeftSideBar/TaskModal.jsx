@@ -14,7 +14,7 @@ const TaskModal = ({ show, handleClose, onTaskAdded }) => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const categories = ['Course', 'Project', 'Assignment'];
+  const categories = ['Course', 'Assignment'];
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -42,7 +42,7 @@ const TaskModal = ({ show, handleClose, onTaskAdded }) => {
       console.log('taskdata', taskData);
      
 
-      const response = await axios.post('http://localhost:3000/api/task', taskData
+      const response = await axios.post(`${import.meta.env.VITE_SERVER_URI}/api/task`, taskData
         , { withCredentials:true}
       
     );

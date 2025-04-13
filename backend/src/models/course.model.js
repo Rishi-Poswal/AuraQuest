@@ -10,6 +10,8 @@ const courseSchema = new mongoose.Schema({
         },
         code:{
             type:String,
+            unique: true,
+            required: true,
         },
         description:{
            type: String,
@@ -20,6 +22,9 @@ const courseSchema = new mongoose.Schema({
         branch:{
            type: String,
         },
+        semester:{
+            type: Number
+        },
         chapters:[{
             type: mongoose.Schema.Types.ObjectId,
             ref:"Chapter"
@@ -29,9 +34,22 @@ const courseSchema = new mongoose.Schema({
             type: String ,
             // ref:"Faculty"
         }],
-        semester:{
-            type: Number
-        }
+        Announcements: [{
+            title: String,
+            message: String,
+            postedBy: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "User",
+            },
+            postedAt: {
+                type: Date,
+                default: Date.now,
+            },
+        }],
+        assignments:[{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Assignment"
+        }],
     },
     {timestamps:true}
 );

@@ -1,5 +1,16 @@
 import mongoose from "mongoose"
-
+const BRANCH_NAMES = [
+    'CSE',
+    'EE', 
+    'ME', 
+    'CE',
+    'CHE',
+    'ECE',
+    'PIE',
+    'ECMs',
+    'MTE',
+    
+];
 const studentSchema = new mongoose.Schema({
         userId:{
            type: mongoose.Schema.Types.ObjectId,
@@ -14,20 +25,21 @@ const studentSchema = new mongoose.Schema({
            type: Number,
            default: 0
         },
-        branch:{
-            type: String,
-        },
         batch:{
             type: Number,
             required: true
         },
-        section:{
+        branch: {
             type: String,
-            // required: true
+            enum: BRANCH_NAMES,
+            required: true,
+            unique: true
         },
-        sectionId:{
-           type: mongoose.Schema.Types.ObjectId,
-           ref: "Section"
+        semester:{
+            type: Number,
+            required: true,
+            min: 1,
+            max: 8 
         },
         // stats:{
         //     type: mongoose.Schema.Types.ObjectId,

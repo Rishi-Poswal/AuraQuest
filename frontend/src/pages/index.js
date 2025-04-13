@@ -2,5 +2,7 @@ import SignIn from "./SignIn/SignIn.jsx";
 import SignUp from "./SignUp/SignUp.jsx";
 import About from "./About/About.jsx";
 import Dashboard from "./Dashboard/Dashboard.jsx";
+import CourseView from "./Courses/CourseView.jsx";
+import Courses from "./Courses/courses.jsx";
 import DailyChallenge from "./DailyChallenge/DailyChallenge.jsx";
-export {SignIn, SignUp, About, Dashboard, DailyChallenge}
+export {SignIn, SignUp, About, Dashboard, CourseView, Courses, DailyChallenge};

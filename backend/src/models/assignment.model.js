@@ -17,10 +17,9 @@ const assignmentSchema = new mongoose.Schema({
         ref: "User",
         required: true
     },
-    targetGroup: {
-        type: String,
-        enum: ['A1', 'A2', 'B1', 'B2', 'C1', 'C2', 'D1', 'D2'],
-        default: 'A1'
+    Course:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Course",
     },
     targetStudents: [{
         type: mongoose.Schema.Types.ObjectId,

@@ -60,12 +60,15 @@ const SignUpPage = () => {
   const [role, setRole] = useState("");
   const [batch, setBatch] = useState("");
   const [branch, setBranch] = useState("");
+  const [semester, setSemester] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
   const navigate = useNavigate()
 
-  const roles = ["Student", "CR", "Professor","admin"];
+  const roles = ["Student", "admin"];
+  const branches = ["CSE", "IT", "ECE", "EEE", "ME", "CE"];
+  const semesters = ["1", "2", "3", "4", "5", "6", "7", "8"];
 
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -81,13 +84,14 @@ const SignUpPage = () => {
         role,
       };
 
-      if (role === "Student" || role === "CR") {
+      if (role === "Student") {
         payload.batch = batch;
         payload.branch = branch;
+        payload.semester = semester;
       }
 
       // Axios request to backend
-      const response = await axios.post("http://localhost:3000/api/auth/signup", payload, {
+      const response = await axios.post(`${import.meta.env.VITE_SERVER_URI}/api/auth/signup`, payload, {
         withCredentials: true, // If your backend uses cookies for auth
       });
 
@@ -108,7 +112,7 @@ const SignUpPage = () => {
     }
   };
 
-  const showAdditionalFields = role === "Student" || role === "CR";
+  const showAdditionalFields = role === "Student" ;
 
   return (
     <motion.div
@@ -161,6 +165,40 @@ const SignUpPage = () => {
               ))}
             </select>
           </div>
+          <div className="mb-4">
+            <label className="block text-gray-300 text-sm font-medium mb-2">
+              Select Branch
+            </label>
+            <select
+              value={branch}
+              onChange={(e) => setBranch(e.target.value)}
+              className="w-full bg-gray-700 text-gray-200 border border-gray-600 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+              <option value="">Select your Branch</option>
+              {branches.map((r) => (
+                <option key={r} value={r}>
+                  {r}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-300 text-sm font-medium mb-2">
+              Select Semester
+            </label>
+            <select
+              value={semester}
+              onChange={(e) => setSemester(e.target.value)}
+              className="w-full bg-gray-700 text-gray-200 border border-gray-600 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+              <option value="">Select your semester</option>
+              {semesters.map((r) => (
+                <option key={r} value={r}>
+                  {r}
+                </option>
+              ))}
+            </select>
+          </div>
 
           {showAdditionalFields && (
             <>
@@ -171,13 +209,7 @@ const SignUpPage = () => {
                 value={batch}
                 onChange={(e) => setBatch(e.target.value)}
               />
-              <Input
-                icon={GitBranch}
-                type="text"
-                placeholder="Branch (e.g., Computer Science)"
-                value={branch}
-                onChange={(e) => setBranch(e.target.value)}
-              />
+           
             </>
           )}
 
