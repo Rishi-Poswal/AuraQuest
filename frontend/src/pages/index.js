@@ -4,4 +4,5 @@ import About from "./About/About.jsx";
 import Dashboard from "./Dashboard/Dashboard.jsx";
 import CourseView from "./Courses/CourseView.jsx";
 import Courses from "./Courses/courses.jsx";
-export {SignIn, SignUp, About, Dashboard, CourseView, Courses}
+import DailyChallenge from "./DailyChallenge/DailyChallenge.jsx";
+export {SignIn, SignUp, About, Dashboard, CourseView, Courses, DailyChallenge};

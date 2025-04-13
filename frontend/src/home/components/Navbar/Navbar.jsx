@@ -270,6 +270,20 @@ function NavigationBar() {
               >
                 Calendar
               </Nav.Link>
+              <Nav.Link 
+                onClick={(e)=> navigate('/leaderboard')}
+                className="px-3 py-2 nav-link-hover"
+                // onClick={closeNav}
+              >
+                Leaderboard
+              </Nav.Link>
+              <Nav.Link 
+                onClick={(e)=> navigate('/dailyChallenge')}
+                className="px-3 py-2 nav-link-hover"
+                // onClick={closeNav}
+              >
+                Daily Challenge
+              </Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>

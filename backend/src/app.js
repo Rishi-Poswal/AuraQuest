@@ -9,7 +9,8 @@ import notificationRoutes from './routes/notification.route.js';
 import { enqueueNotification, enqueueReminder } from "./utils/Jobs/jobProducer.js";
 import scheduleRoutes from './routes/schedule.routes.js';
 import dashboardRoutes from './routes/dashboard.route.js';
-import adminRoutes from './routes/admin.route.js'
+import adminRoutes from './routes/admin.route.js';
+import dailyChallengeRoutes from './routes/dailyChallenge.route.js';
 
 dotenv.config()
     
@@ -50,6 +51,9 @@ app.use("/api/dashboard", dashboardRoutes);
 
 // Admin tasks
 app.use("/api/admin", adminRoutes);
+
+//user daily challenge
+app.use("/api/dailyChallenge",dailyChallengeRoutes);
 
 
 export {app}
