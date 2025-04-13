@@ -249,6 +249,13 @@ function NavigationBar() {
           {/* Navigation Links */}
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mx-auto">
+            <Nav.Link 
+                onClick={(e)=> navigate('/courses')}
+                className="px-3 py-2 nav-link-hover"
+              
+              >
+                Courses
+              </Nav.Link>
               <Nav.Link 
                 onClick={(e)=> navigate('/dashboard')}
                 className="px-3 py-2 nav-link-hover"

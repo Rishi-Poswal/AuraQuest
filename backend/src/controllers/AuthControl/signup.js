@@ -16,15 +16,15 @@ import {sendVerificationEmail, sendWelcomeEmail,sendPasswordResetEmail,
 
 // <-- Signup endpoint -->
 export const signup = async (req, res) => {
-    const { username, email, password, role, branch, batch } = req.body;
+    const { username, email, password, role, branch, semester, batch } = req.body;
     try {
         if (!username || !email || !password || !role ) {
             throw new Error("All fields are required");
         }
 
         // Check for branch and batch if role is 'Student' or 'CR'
-        if ((role === 'Student' || role === 'CR') && (!branch || !batch)) {
-            throw new Error("Branch and batch are required for Student or CR roles");
+        if ((role === 'Student' || role === 'CR') && (!branch || !batch || !semester)) {
+            throw new Error("Branch, batch and semester are required for Student or CR roles");
         }
 
         const userAlreadyExists = await User.findOne({ $or: [{ email }, { username }] });
@@ -58,7 +58,8 @@ export const signup = async (req, res) => {
                 userId:user._id,
                 isCR: role==='CR',
                 branch,
-                batch
+                batch,
+                semester
             }
             
             const student = new Student(studentData);
@@ -70,8 +71,7 @@ export const signup = async (req, res) => {
                 studentId: student._id,
             });
 
-            await stats.save();
-            
+            await stats.save();   
         }
 
         const activity = new Activity(activityData);

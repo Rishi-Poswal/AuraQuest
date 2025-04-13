@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { checkAuth } from "./redux/authSlice";
 import { useLocation } from "react-router-dom";
 import AdminDashboard from './pages/Admin/AdminDashboard.jsx';
+import { Courses, CourseView } from './pages';
 
 const App = () => {
   useEffect(() => {
@@ -99,6 +100,30 @@ const App = () => {
             <EmailVerificationPage />
           </AuthLayout>
               }
+      />
+      <Route
+        path="/courses"
+        element={
+          isAuthenticated ? (
+            <MainLayout>
+              <Courses />
+            </MainLayout>
+          ) : (
+            <Navigate to="/signin" />
+          )
+        }
+      />
+         <Route
+        path="/courses/view/:code"
+        element={
+          isAuthenticated ? (
+            <MainLayout>
+              <CourseView/>
+            </MainLayout>
+          ) : (
+            <Navigate to="/signin" />
+          )
+        }
       />
 
       <Route

@@ -22,7 +22,7 @@ const ScheduleCalendar = () => {
   const fetchEvents = async () => {
     try {
       const secId='672a80ac9e9d132a1adfc831'
-      const response = await axios.get(`http://localhost:3000/api/events/${secId}`);  // include section id here
+      const response = await axios.get(`${import.meta.env.VITE_SERVER_URI}/api/events/${secId}`);  // include section id here
       const formattedEvents = response.data.map((event) => {
         // const rruleStr = `FREQ=${event.rrule.freq};UNTIL=${event.endRecurrence.split('T')[0].replace(/-/g, '')};BYDAY=${event.rrule.byweekday.join(',')}`;
  
@@ -64,7 +64,7 @@ const ScheduleCalendar = () => {
 
     console.log('eventDtaa', eventData);
     try {
-      await axios.post('http://localhost:3000/api/events', {
+      await axios.post(`${import.meta.env.VITE_SERVER_URI}/api/events`, {
         title: eventData.title,
         category: eventData.category,
         startDate: eventData.startDate,

@@ -1,5 +1,6 @@
 import mongoose from "mongoose"
 
+
 const userSchema = new mongoose.Schema({
         username:{
            type: String,
@@ -17,7 +18,7 @@ const userSchema = new mongoose.Schema({
         },
         role:{
             type: String,
-            enum: ['Student', 'CR', 'Professor', 'admin'],
+            enum: ['Student', 'admin'],
             default: 'student',
             required: true
         },
@@ -56,6 +57,7 @@ const userSchema = new mongoose.Schema({
         userFCMtoken:{
             type:String
         },
+
         // activiteDaysId:{
         //     type:mongoose.Schema.Types.ObjectId,
         //     ref:'Activity'

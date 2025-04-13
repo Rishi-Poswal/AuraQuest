@@ -16,7 +16,7 @@ const Today = () => {
 
   const fetchTasks = async () => {
     try {
-      const response = await axios.post("http://localhost:3000/api/task/today",{ withCredentials:true});
+      const response = await axios.post(`${import.meta.env.VITE_SERVER_URI}/api/task/today`,{ withCredentials:true});
       setTasks(response.data.data);
     } catch (error) {
       console.error("Error fetching today's tasks:", error);
@@ -26,7 +26,7 @@ const Today = () => {
   // Complete a task
   const handleTaskComplete = async (taskId, aura) => {
     try {
-      await axios.patch(`http://localhost:3000/api/task/complete-task/${taskId}`, { withCredentials:true});
+      await axios.patch(`${import.meta.env.VITE_SERVER_URI}/task/complete-task/${taskId}`, { withCredentials:true});
       setCompletedTasks([...completedTasks, taskId]);
       setAuraPointsEarned(aura);
       setShowCompletionAlert(true);
@@ -42,7 +42,7 @@ const Today = () => {
   // Delete a task
   const handleDeleteTask = async (taskId) => {
     try {
-      await axios.delete(`http://localhost:3000/api/task/delete-task/${taskId}`,{ withCredentials:true});
+      await axios.delete(`${import.meta.env.VITE_SERVER_URI}/api/task/delete-task/${taskId}`,{ withCredentials:true});
       fetchTasks();
     } catch (error) {
       console.error("Error deleting task:", error);
