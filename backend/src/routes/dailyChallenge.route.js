@@ -4,7 +4,7 @@ import {get_all_daily_challenges, get_daily_challenge , submit_solution, check_s
 
 const router = express.Router();
 
-//daily challenges routes for admin:
+
 router.get("/get_daily_challenge", get_daily_challenge);
 router.get("/get_all_daily_challenges", get_all_daily_challenges);
 router.post("/submit_solution", protectRoute, submit_solution);

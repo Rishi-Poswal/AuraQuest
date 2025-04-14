@@ -3,6 +3,7 @@ import {Challenge} from "../../models/dailyChallenge.js";
 import { DailySubmission } from "../../models/dailySubmission.js";
 import cron from "node-cron";
 import { updateAura } from "../../utils/updateAura.js";
+import { enqueueNotification } from "../../utils/Jobs/jobProducer.js";
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
@@ -189,6 +190,14 @@ const submit_solution = async (req, res) => {
         await updateAura(userId, challenge.score || 50);
       }
       
+      await enqueueNotification({
+          type:"normal",           //type = ['reminder', 'normal']
+          targetType:"single",     // = ['single', 'sections', 'batch', 'all']
+          userId:userId,      
+          title:`Aura ${challenge.score}++`,          
+          description:"You just earned Aura for submitting a daily challenge!!!",
+      })
+
       await newSubmission.save();
       res.status(201).json({ success: true, message: "Submission received.", submission: newSubmission });
   

@@ -11,6 +11,7 @@ import scheduleRoutes from './routes/schedule.routes.js';
 import dashboardRoutes from './routes/dashboard.route.js';
 import adminRoutes from './routes/admin.route.js';
 import dailyChallengeRoutes from './routes/dailyChallenge.route.js';
+import leaderboardRoutes from './routes/leaderboard.route.js';
 
 dotenv.config()
     
@@ -54,6 +55,9 @@ app.use("/api/admin", adminRoutes);
 
 //user daily challenge
 app.use("/api/dailyChallenge",dailyChallengeRoutes);
+
+//leaderboard
+app.use("/api/leaderboard",leaderboardRoutes);
 
 
 export {app}

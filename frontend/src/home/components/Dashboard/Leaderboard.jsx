@@ -1,45 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Crown, Trophy, Medal, User } from 'lucide-react';
+import axios from 'axios';
 
 const ITEMS_PER_PAGE = 20;
 
 const Leaderboard = () => {
-  const [currentCategory, setCurrentCategory] = useState('today');
+  const [currentCategory, setCurrentCategory] = useState('overall');
   const [currentPage, setCurrentPage] = useState(1);
-  
-  // sample data
-  const categories = {
-    today: Array.from({ length: 100 }, (_, i) => ({
-      rank: i + 1,
-      username: `User${i + 1}`,
-      auraPoints: '1234',
-      rankTitle: '',      //cases can be desigend to give rank title
-      profilePic: '' //user profile pic to be included here
-    })),
-    overall: Array.from({ length: 100 }, (_, i) => ({
-      rank: i + 1,
-      username: `User${i + 1}`,
-      auraPoints: '3455',
-      rankTitle: '',
-      profilePic: '' //user profile pic to be included here
-    })),
-    batch: Array.from({ length: 100 }, (_, i) => ({
-      rank: i + 1,
-      username: `User${i + 1}`,
-      auraPoints: '4566',
-      rankTitle: '',
-      profilePic: ''  //user profile pic to be included here
-    }))
-  };
+  const [categories, setCategories] = useState({
+    overall: [],
+    batch: [],
+    branch: []
+  });
+  const [currentUser, setCurrentUser] = useState(null);
 
-  // Mock current user data
-  const currentUser = {
-    rank: 42,
-    username: "CurrentUser",
-    auraPoints: 2500,
-    rankTitle: "Expert",
-    profilePic: ''
-  };
+  useEffect(() => {
+    const fetchLeaderboardData = async () => {
+      try {
+        const res = await axios.get(`${import.meta.env.VITE_SERVER_URI}/api/leaderboard/get_leaderboard`);
+        const { leaderboard, currentUser } = res.data;
+
+        console.log(res.data)
+
+        const overall = leaderboard;
+        const batch = leaderboard.filter((user) => user.batch === currentUser.batch);
+        const branch = leaderboard.filter((user) => user.batch === currentUser.batch && user.branch === currentUser.branch);
+
+        setCategories({ overall, batch, branch });
+        setCurrentUser(currentUser);
+      } catch (err) {
+        console.error('Failed to fetch leaderboard data:', err);
+      }
+    };
+
+    fetchLeaderboardData();
+  }, []);
 
   const getRankIcon = (rank) => {
     if (rank === 1) return <Crown className="text-warning" size={24} />;
@@ -50,56 +45,58 @@ const Leaderboard = () => {
 
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
-  const currentData = categories[currentCategory].slice(startIndex, endIndex);
-  const totalPages = Math.ceil(categories[currentCategory].length / ITEMS_PER_PAGE);
+  const currentData = categories[currentCategory]?.slice(startIndex, endIndex) || [];
+  const totalPages = Math.ceil((categories[currentCategory]?.length || 0) / ITEMS_PER_PAGE);
 
   return (
     <div className="container p-4">
-
       <div className="nav nav-tabs mb-4">
-        {['today', 'overall', 'batch'].map((category) => (
-          <button 
-            key={category}
-            className={`nav-link ${currentCategory === category ? 'active' : ''}`}
+        {[
+          { key: 'overall', label: 'Overall' },
+          { key: 'batch', label: `Batch ${currentUser?.batch || ''}` },
+          { key: 'branch', label: `Branch (${currentUser?.batch || ''}-${currentUser?.branch || ''})` }
+        ].map(({ key, label }) => (
+          <button
+            key={key}
+            className={`nav-link ${currentCategory === key ? 'active' : ''}`}
             onClick={() => {
-              setCurrentCategory(category);
+              setCurrentCategory(key);
               setCurrentPage(1);
             }}
           >
-            {category.charAt(0).toUpperCase() + category.slice(1)}
+            {label}
           </button>
         ))}
       </div>
 
-      <div className="card mb-4 bg-light">
-        <div className="card-body">
-          <div className="d-flex justify-content-between align-items-center">
-            <div className="d-flex align-items-center gap-3">
-              <div className="rounded-circle bg-secondary d-flex align-items-center justify-content-center" style={{ width: '40px', height: '40px' }}>
-                {currentUser.profilePic ? (
-                  <img 
-                    src={currentUser.profilePic} 
-                    alt={currentUser.username} 
-                    className="rounded-circle"
-                    width={40}
-                    height={40}
-                  />
-                ) : (
-                  <User className="text-white" size={24} />
-                )}
+      {currentUser && (
+        <div className="card mb-4 bg-light">
+          <div className="card-body">
+            <div className="d-flex justify-content-between align-items-center">
+              <div className="d-flex align-items-center gap-3">
+                <div className="rounded-circle bg-secondary d-flex align-items-center justify-content-center" style={{ width: '40px', height: '40px' }}>
+                  {currentUser.profilePic ? (
+                    <img
+                      src={currentUser.profilePic}
+                      alt={currentUser.username}
+                      className="rounded-circle"
+                      width={40}
+                      height={40}
+                    />
+                  ) : (
+                    <User className="text-white" size={24} />
+                  )}
+                </div>
+                <span className="fw-bold">#{currentUser.rank}</span>
+                <span className="fw-bold">{currentUser.username}</span>
               </div>
-              <span className="fw-bold">#{currentUser.rank}</span>
-              <span className="fw-bold">{currentUser.username}</span>
-            </div>
-            <div className="d-flex align-items-center gap-3">
-              <span>{currentUser.auraPoints.toLocaleString()} points</span>
-              <span className="badge bg-primary rounded-pill">
-                {currentUser.rankTitle}
-              </span>
+              <div className="d-flex align-items-center gap-3">
+                <span>{currentUser.aura.toLocaleString()} points</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
 
       <div className="card">
         <div className="table-responsive">
@@ -109,7 +106,7 @@ const Leaderboard = () => {
                 <th>Rank</th>
                 <th>User</th>
                 <th>Points</th>
-                <th>Rank Title</th>
+                <th>Name & Details</th>
               </tr>
             </thead>
             <tbody>
@@ -122,9 +119,9 @@ const Leaderboard = () => {
                     <div className="d-flex align-items-center gap-3">
                       <div className="rounded-circle bg-secondary d-flex align-items-center justify-content-center" style={{ width: '40px', height: '40px' }}>
                         {user.profilePic ? (
-                          <img 
-                            src={user.profilePic} 
-                            alt={user.username} 
+                          <img
+                            src={user.profilePic}
+                            alt={user.username}
                             className="rounded-circle"
                             width={40}
                             height={40}
@@ -136,11 +133,10 @@ const Leaderboard = () => {
                       <span className="fw-semibold">{user.username}</span>
                     </div>
                   </td>
-                  <td className="align-middle">{user.auraPoints.toLocaleString()}</td>
+                  <td className="align-middle">{user.aura.toLocaleString()}</td>
                   <td className="align-middle">
-                    <span className="badge bg-secondary rounded-pill">
-                      {user.rankTitle}
-                    </span>
+                    {user.name} <br />
+                    <small>{user.branch} | Batch {user.batch}</small>
                   </td>
                 </tr>
               ))}
