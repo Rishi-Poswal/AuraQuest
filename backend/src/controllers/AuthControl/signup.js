@@ -223,48 +223,71 @@ export const forgotPassword = async (req, res) => {
 
 // <-- reset password endpoint -->
 export const resetPassword = async (req, res) => {
-	try {
-		const { token } = req.params;
-		const { password } = req.body;
+  try {
+    const resetToken = req.params.token;
+    const { password } = req.body;
 
-		const user = await User.findOne({
-			resetPasswordToken: token,
-			resetPasswordExpiresAt: { $gt: Date.now() },
-		});
+    // Find user by valid reset token and ensure it's not expired
+    const user = await User.findOne({
+      resetPasswordToken: resetToken,
+      resetPasswordExpiresAt: { $gt: Date.now() },
+    });
 
-		if (!user) {
-			return res.status(400).json({ success: false, message: "Invalid or expired reset token" });
-		}
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid or expired reset token",
+      });
+    }
 
-		// update password
-		const hashedPassword = await bcryptjs.hash(password, 10);
+    // Hash new password and update user
+    const newHashedPassword = await bcryptjs.hash(password, 10);
+    user.password = newHashedPassword;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpiresAt = undefined;
 
-		user.password = hashedPassword;
-		user.resetPasswordToken = undefined;
-		user.resetPasswordExpiresAt = undefined;
-		await user.save();
+    await user.save();
 
-		await sendResetSuccessEmail(user.email);
+    // Notify user via email
+    await sendResetSuccessEmail(user.email);
 
-		res.status(200).json({ success: true, message: "Password reset successful" });
-	} catch (error) {
-		console.log("Error in resetPassword ", error);
-		res.status(400).json({ success: false, message: error.message });
-	}
+    return res.status(200).json({
+      success: true,
+      message: "Password reset successful",
+    });
+  } catch (err) {
+    console.error("Reset Password Error:", err);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong. Please try again.",
+    });
+  }
 };
 
 export const checkAuth = async (req, res) => {
-    try {
-      const user = req.user;
-      if (!user) {
-        return res.status(400).json({ success: false, message: "User not found" });
-      }
-  
-      res.status(200).json({ success: true, user });
-    } catch (error) {
-      console.log("Error in checkAuth ", error);
-      res.status(400).json({ success: false, message: error.message });
+  try {
+    const authenticatedUser = req.user;
+
+    if (!authenticatedUser) {
+      res.status(400).json({
+        success: false,
+        message: "User not found",
+      });
+      return;
     }
-  };
+
+    res.status(200).json({
+      success: true,
+      user: authenticatedUser,
+    });
+  } catch (err) {
+    console.error("checkAuth error:", err);
+    res.status(400).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
   
 
