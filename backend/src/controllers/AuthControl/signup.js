@@ -161,40 +161,65 @@ export const verifyEmail = async (req, res) => {
 };
 
 // <-- signout -- >
-
 export const logout = async (req, res) => {
-	res.clearCookie("token");
-	res.status(200).json({ success: true, message: "Logged out successfully" });
+  try {
+    // Clear the auth token cookie
+    res.clearCookie("token");
+
+    // Send success response
+    res.status(200).json({
+      success: true,
+      message: "Logged out successfully",
+    });
+  } catch (error) {
+    console.error("Logout error:", error.message);
+    res.status(500).json({
+      success: false,
+      message: "Logout failed",
+    });
+  }
 };
+
+
 // <-- forgot password endpoint -->
-
 export const forgotPassword = async (req, res) => {
-	const { email } = req.body;
-	try {
-		const user = await User.findOne({ email });
+  try {
+    const { email } = req.body;
 
-		if (!user) {
-			return res.status(400).json({ success: false, message: "User not found" });
-		}
+    // Check if user exists
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "User not found",
+      });
+    }
 
-		// Generate reset token
-		const resetToken = crypto.randomBytes(20).toString("hex");
-		const resetTokenExpiresAt = Date.now() + 1 * 60 * 60 * 1000; // 1 hour
+    // Create reset token and expiration time
+    const token = crypto.randomBytes(20).toString("hex");
+    user.resetPasswordToken = token;
+    user.resetPasswordExpiresAt = Date.now() + 60 * 60 * 1000; // 1 hour
 
-		user.resetPasswordToken = resetToken;
-		user.resetPasswordExpiresAt = resetTokenExpiresAt;
+    // Save changes
+    await user.save();
 
-		await user.save();
+    // Send email with reset link
+    const resetLink = `${process.env.CLIENT_URI}/reset-password/${token}`;
+    await sendPasswordResetEmail(user.email, resetLink);
 
-		// send email
-		await sendPasswordResetEmail(user.email, `${process.env.CLIENT_URI}/reset-password/${resetToken}`);
-
-		res.status(200).json({ success: true, message: "Password reset link sent to your email" });
-	} catch (error) {
-		console.log("Error in forgotPassword ", error);
-		res.status(400).json({ success: false, message: error.message });
-	}
+    return res.status(200).json({
+      success: true,
+      message: "Password reset link sent to your email",
+    });
+  } catch (err) {
+    console.error("Forgot Password Error:", err);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong. Please try again.",
+    });
+  }
 };
+
 
 // <-- reset password endpoint -->
 export const resetPassword = async (req, res) => {
