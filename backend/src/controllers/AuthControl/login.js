@@ -27,14 +27,15 @@ export const login = async (req, res) => {
 		res.status(200).json({
 			success: true,
 			role: user.role,
-			message: "Logged in successfully",
+			message: "Logged in Successfully",
 			user: {
 				...user._doc,
 				password: undefined,
 			},
 		});
 	} catch (error) {
-		console.log("Error in login ", error);
+		console.log("Error in Login ", error);
 		res.status(400).json({ success: false, message: error.message });
 	}
 };
+
